@@ -1,3 +1,12 @@
-import { Map } from "immutable";
+import { Map, List } from "immutable";
 
-export default Map({});
+export default Map({
+	mouseDown: false,
+	knobs: List([
+		Map({ value: 0, label: ""}),
+		Map({ value: 0, label: ""}),
+		Map({ value: 0, label: ""}),
+		Map({ value: 0, label: ""}),
+		Map({ value: 0, label: ""}),
+	]),
+});
