@@ -1,0 +1,31 @@
+.knob-container {
+  display: inline-block;
+  background-image: linear-gradient(to bottom, #A9A9A9, #baabab); }
+  .knob-container .knob-background {
+    height: 150px;
+    width: 150px;
+    display: inline-block; }
+  .knob-container .face {
+    width: 135px;
+    height: 135px;
+    position: relative;
+    top: 7.5px;
+    left: 7.5px;
+    background-color: #d1c7c7;
+    border-radius: 50%; }
+  .knob-container .position {
+    height: 67.5px;
+    width: 7.5px;
+    display: block;
+    z-index: 2;
+    position: relative;
+    top: 67.5px;
+    left: 64.125px;
+    background-color: #FFF;
+    border-radius: 1em; }
+  .knob-container .knob-label {
+    display: block;
+    margin: auto;
+    margin-bottom: 7.5px; }
+
+/*# sourceMappingURL=output.css.map */

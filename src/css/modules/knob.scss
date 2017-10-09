@@ -1,0 +1,41 @@
+$knobSize: 150px;
+$faceSize: $knobSize * 0.9;
+
+.knob-container {
+  display: inline-block;
+  background-image: linear-gradient(to bottom, #A9A9A9, #baabab);
+
+  .knob-background {
+    height: $knobSize;
+    width: $knobSize;
+    display: inline-block;
+  }
+  .face {
+    width: $faceSize;
+    height: $faceSize;
+    position: relative;
+    top: $knobSize*0.05;
+    left: $knobSize*0.05;
+    background-color: #d1c7c7;
+    border-radius: 50%;
+  }
+  .position {
+    height: $faceSize * 0.5;
+    width: $knobSize*0.05;
+    display: block;
+    z-index: 2;
+    position: relative;
+    top: $faceSize*0.5;
+    left: $faceSize*0.475;
+    background-color: #FFF;
+    border-radius: 1em;
+  }
+  .knob-label {
+    display: block;
+    margin: auto;
+    margin-bottom: $knobSize * 0.05;
+  }
+}
+
+
+
