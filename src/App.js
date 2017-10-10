@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MidiController from "./controls/Knobs";
+import MidiController from "./containers/Knobs_container";
 
 class App extends Component {
   render() {
