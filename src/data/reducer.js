@@ -11,20 +11,20 @@ const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
 }
 const updateDial = (state, { event, id }) => {
-  if (state.get('mouseDown')) {
+  	if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
 		let knobInfo = knob.getBoundingClientRect();
   		let newValue = Math.floor(127 - (event.clientY - knobInfo.y) * (127/knobInfo.height));
-    if (newValue < 0) {
-    	sendMidi(id, 0);
-    	return state.setIn(['knobs', id, 'value'], 0);
-    } else if (newValue > 127) {
-    	sendMidi(id, 127);
-    	return state.setIn(['knobs', id, 'value'], 127);
-    } else {
-    	sendMidi(id, newValue);
-    	return state.setIn(['knobs', id, 'value'], newValue);
-    }
+	    if (newValue < 0) {
+	    	sendMidi(id, 0);
+	    	return state.setIn(['knobs', id, 'value'], 0);
+	    } else if (newValue > 127) {
+	    	sendMidi(id, 127);
+	    	return state.setIn(['knobs', id, 'value'], 127);
+	    } else {
+	    	sendMidi(id, newValue);
+	    	return state.setIn(['knobs', id, 'value'], newValue);
+	    }
 	}
 	return state;
 };
@@ -41,16 +41,38 @@ const updateDialMouseLeave = (state, { event, id }) => {
 }
 
 const updateFader = (state, { event, id}) => {
-	// TODO
+	console.log(state.getIn(['faders', id, 'midiValue']));
+  	if (state.get('mouseDown')) {
+		let fader = document.getElementById("fader-" + id);
+		let faderInfo = fader.getBoundingClientRect();
+		// takes into account size of fader notch
+		let faderHeight = faderInfo.height - fader.childNodes[0].getBoundingClientRect().height;
+  		let yValue = (event.clientY - faderInfo.y);
+  		// scaling - takes into account size of the fade position notch
+  		let midiValue = 127 - Math.floor(yValue * (127/faderHeight));
+  		if (midiValue < 0) {
+	    	sendMidi(id, 0);
+	    	return state.setIn(['faders', id, 'value'], faderHeight).setIn(['faders', id, 'midiValue'], 0);
+	    } else if (midiValue > 127) {
+	    	sendMidi(id, 127);
+	    	return state.setIn(['faders', id, 'value'], 0).setIn(['faders', id, 'midiValue'], 127);
+	    } else {
+	    	sendMidi(id, midiValue);
+	    	return state.setIn(['faders', id, 'value'], yValue).setIn(['faders', id, 'midiValue'], midiValue);
+	    }
+	}
 	return state;
 }
 
 const updateFaderMouseLeave = (state, { event, id }) => {
-	// TODO
+	if (state.get('mouseDown')) {
+		return state.set('mouseDown', false);
+	}
 	return state;
 } 
 
 // TODO can you combine the mouse leave into update function? Would it work to just run the update function on mouse
+// TODO can you combine the dial and fader update, passing in the type of component that it is?
 
 const sendMidi = (id, val) => {
 	WebMidi.enable(function(err) {

@@ -24,13 +24,13 @@ export const updateDialMouseLeave = (event, id) => ({
 });
 
 export const updateFader = (event, id) => ({
-    type: UPDATE_DIAL,
+    type: UPDATE_FADER,
     event,
     id,
 });
 
 export const updateFaderMouseLeave = (event, id) => ({
-    type: UPDATE_DIALMOUSELEAVE,
+    type: UPDATE_FADERMOUSELEAVE,
     event,
     id,
 });
