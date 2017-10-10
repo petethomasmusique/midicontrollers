@@ -1,8 +1,8 @@
 import { connect } from "react-redux";
 import Knob from "../components/Knob";
 import { updateMouseDown } from "../data/actions";
-import { updateMouseMove } from "../data/actions";
-import { updateMouseLeave } from "../data/actions";
+import { updateDial } from "../data/actions";
+import { updateDialMouseLeave } from "../data/actions";
 
 const mapStateToProps = state => ({
     knobs: state.get("knobs"),
@@ -10,7 +10,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     mouseDown: (bool) => dispatch(updateMouseDown(bool)),
-    mouseMove: (event, id) => dispatch(updateMouseMove(event, id)),
-    mouseLeave: (event, id) => dispatch(updateMouseLeave(event, id)),
+    updateDial: (event, id) => dispatch(updateDial(event, id)),
+    updateDialmouseLeave: (event, id) => dispatch(updateDialMouseLeave(event, id)),
 }) 
 export default connect(mapStateToProps, mapDispatchToProps)(Knob);

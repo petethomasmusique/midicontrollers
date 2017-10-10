@@ -1,8 +1,8 @@
-$knobSize: 100px;
+$knobSize: $componentScale;
 $faceSize: $knobSize * 0.9;
 
 .knob-container {
-  margin: 0.05 * $knobSize;
+  margin: $spacing;
   display: inline-block;
   background-image: linear-gradient(to bottom, $dark, #baabab);
   border-radius: 4px;
@@ -41,7 +41,7 @@ $faceSize: $knobSize * 0.9;
     padding-left: $knobSize * 0.02;
     padding-right: $knobSize * 0.02;
     padding-top: $knobSize * 0.01;
-    font-size: $knobSize * 0.1; 
+    font-size: $textSize; 
     .midi-channel {
       width: $knobSize * 0.18;
       display: inline-block;
