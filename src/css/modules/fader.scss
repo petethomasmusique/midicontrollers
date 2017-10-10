@@ -1,0 +1,57 @@
+$width: ($componentScale*2)/3 - ($spacing*2)/3;
+$height: 2*$componentScale;
+
+.fader-container {
+	margin: $spacing;
+	display: inline-block;
+	background-image: linear-gradient(to bottom, $dark, #baabab);
+	border-radius: 4px;
+	.fader-background {
+		width: $width;
+		height: $height;
+		.fader-inset {
+			width: $width * 0.8;
+			height: $height * 0.9;
+			background-color: $light;
+			position: relative;
+			left: $width * 0.1;
+			top: $height * 0.05;
+			border-radius: 4px;
+			.fader-position {
+			    height: $height * 0.05;
+			    width: $width * 0.8;
+			    display: block;
+			    z-index: 2;
+			    position: relative;
+			    background-color: $lightText;
+			    border-radius: 1em;
+			}
+		}
+	}
+	.fader-info {
+		display: block;
+	    color: $lightText;
+	    border-radius: 0 0 4px 4px;
+	    background-color: $light;
+	    padding-left: $width * 0.02;
+	    padding-right: $width * 0.02;
+	    padding-top: $width * 0.01;
+	    font-size: $textSize; 
+	    .midi-channel {
+	      width: $width * 0.18;
+	      display: inline-block;
+	    }
+	    .fader-label {
+	      width: $width * 0.6;
+	      text-align: center;
+	      margin-top: 0;
+	      margin-bottom: 0; 
+	      display: inline-block;
+	    }
+	    .midi-value {
+	      width: $width * 0.18;
+	      display: inline-block;
+	      text-align: right;
+	    }
+	}
+}

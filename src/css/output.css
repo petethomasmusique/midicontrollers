@@ -6,27 +6,27 @@ body {
   display: inline-block;
   background-image: linear-gradient(to bottom, #A9A9A9, #baabab);
   border-radius: 4px;
-  width: 100px; }
+  width: 150px; }
   .knob-container .knob-background {
-    height: 100px;
-    width: 100px;
+    height: 150px;
+    width: 150px;
     display: inline-block; }
   .knob-container .face {
-    width: 90px;
-    height: 90px;
+    width: 135px;
+    height: 135px;
     position: relative;
-    top: 5px;
-    left: 5px;
+    top: 7.5px;
+    left: 7.5px;
     background-color: #d1c7c7;
     border-radius: 50%; }
   .knob-container .position {
-    height: 45px;
-    width: 5px;
+    height: 67.5px;
+    width: 7.5px;
     display: block;
     z-index: 2;
     position: relative;
-    top: 45px;
-    left: 42.75px;
+    top: 67.5px;
+    left: 64.125px;
     background-color: #FFF;
     border-radius: 1em; }
   .knob-container .knob-info {
@@ -34,21 +34,68 @@ body {
     color: #FFF;
     border-radius: 0 0 4px 4px;
     background-color: #d1c7c7;
-    padding-left: 2px;
-    padding-right: 2px;
-    padding-top: 1px;
-    font-size: 10px; }
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 1.5px;
+    font-size: 14px; }
     .knob-container .knob-info .midi-channel {
-      width: 18px;
+      width: 27px;
       display: inline-block; }
     .knob-container .knob-info .knob-label {
-      width: 60px;
+      width: 90px;
       text-align: center;
       margin-top: 0;
       margin-bottom: 0;
       display: inline-block; }
     .knob-container .knob-info .midi-value {
-      width: 18px;
+      width: 27px;
+      display: inline-block;
+      text-align: right; }
+
+.fader-container {
+  margin: 5px;
+  display: inline-block;
+  background-image: linear-gradient(to bottom, #A9A9A9, #baabab);
+  border-radius: 4px; }
+  .fader-container .fader-background {
+    width: 96.66667px;
+    height: 300px; }
+    .fader-container .fader-background .fader-inset {
+      width: 77.33333px;
+      height: 270px;
+      background-color: #d1c7c7;
+      position: relative;
+      left: 9.66667px;
+      top: 15px;
+      border-radius: 4px; }
+      .fader-container .fader-background .fader-inset .fader-position {
+        height: 15px;
+        width: 77.33333px;
+        display: block;
+        z-index: 2;
+        position: relative;
+        background-color: #FFF;
+        border-radius: 1em; }
+  .fader-container .fader-info {
+    display: block;
+    color: #FFF;
+    border-radius: 0 0 4px 4px;
+    background-color: #d1c7c7;
+    padding-left: 1.93333px;
+    padding-right: 1.93333px;
+    padding-top: 0.96667px;
+    font-size: 14px; }
+    .fader-container .fader-info .midi-channel {
+      width: 17.4px;
+      display: inline-block; }
+    .fader-container .fader-info .fader-label {
+      width: 58px;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 0;
+      display: inline-block; }
+    .fader-container .fader-info .midi-value {
+      width: 17.4px;
       display: inline-block;
       text-align: right; }
 
