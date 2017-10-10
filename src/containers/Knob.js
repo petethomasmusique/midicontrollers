@@ -1,5 +1,5 @@
 import { connect } from "react-redux";
-import Knobs from "../components/Knobs";
+import Knob from "../components/Knob";
 import { updateMouseDown } from "../data/actions";
 import { updateMouseMove } from "../data/actions";
 import { updateMouseLeave } from "../data/actions";
@@ -13,4 +13,4 @@ const mapDispatchToProps = dispatch => ({
     mouseMove: (event, id) => dispatch(updateMouseMove(event, id)),
     mouseLeave: (event, id) => dispatch(updateMouseLeave(event, id)),
 }) 
-export default connect(mapStateToProps, mapDispatchToProps)(Knobs);
+export default connect(mapStateToProps, mapDispatchToProps)(Knob);

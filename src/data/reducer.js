@@ -9,20 +9,21 @@ const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
 }
 const updateMouseMove = (state, { event, id }) => {
-    if (state.get('mouseDown')) {
+  if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
 		let knobInfo = knob.getBoundingClientRect();
-      	let newValue = 127 - (event.clientY - knobInfo.y); // scale y co-ordinate depending on where the element is
-        if (newValue < 0) {
-        	sendMidi(id, 0);
-        	return state.setIn(['knobs', id, 'value'], 0);
-        } else if (newValue > 127) {
-        	sendMidi(id, 127);
-        	return state.setIn(['knobs', id, 'value'], 127);
-        } else {
-        	sendMidi(id, newValue);
-        	return state.setIn(['knobs', id, 'value'], newValue);
-        }
+		console.log(knobInfo);
+  	let newValue = Math.floor(127 - (event.clientY - knobInfo.y) * (127/knobInfo.height)); // scale y co-ordinate depending on where the element is
+    if (newValue < 0) {
+    	sendMidi(id, 0);
+    	return state.setIn(['knobs', id, 'value'], 0);
+    } else if (newValue > 127) {
+    	sendMidi(id, 127);
+    	return state.setIn(['knobs', id, 'value'], 127);
+    } else {
+    	sendMidi(id, newValue);
+    	return state.setIn(['knobs', id, 'value'], newValue);
+    }
 	}
 	return state;
 };
@@ -34,8 +35,8 @@ const updateMouseLeave = (state, { event, id }) => {
 		} else if (state.getIn(['knobs', id, 'value']) < 5) {
 			return state.setIn(['knobs', id, 'value'], 0).set('mouseDown', false);
 		}
-  	}
-  	return state;
+	}
+	return state;
 }
 
 const sendMidi = (id, val) => {
