@@ -1,9 +1,12 @@
-$knobSize: 150px;
+$knobSize: 100px;
 $faceSize: $knobSize * 0.9;
 
 .knob-container {
+  margin: 0.05 * $knobSize;
   display: inline-block;
-  background-image: linear-gradient(to bottom, #A9A9A9, #baabab);
+  background-image: linear-gradient(to bottom, $dark, #baabab);
+  border-radius: 4px;
+  width: $knobSize;
 
   .knob-background {
     height: $knobSize;
@@ -16,24 +19,45 @@ $faceSize: $knobSize * 0.9;
     position: relative;
     top: $knobSize*0.05;
     left: $knobSize*0.05;
-    background-color: #d1c7c7;
+    background-color: $light;
     border-radius: 50%;
   }
   .position {
     height: $faceSize * 0.5;
-    width: $knobSize*0.05;
+    width: $knobSize * 0.05;
     display: block;
     z-index: 2;
     position: relative;
     top: $faceSize*0.5;
     left: $faceSize*0.475;
-    background-color: #FFF;
+    background-color: $lightText;
     border-radius: 1em;
   }
-  .knob-label {
+  .knob-info {
     display: block;
-    margin: auto;
-    margin-bottom: $knobSize * 0.05;
+    color: $lightText;
+    border-radius: 0 0 4px 4px;
+    background-color: $light;
+    padding-left: $knobSize * 0.02;
+    padding-right: $knobSize * 0.02;
+    padding-top: $knobSize * 0.01;
+    font-size: $knobSize * 0.1; 
+    .midi-channel {
+      width: $knobSize * 0.18;
+      display: inline-block;
+    }
+    .knob-label {
+      width: $knobSize * 0.6;
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 0; 
+      display: inline-block;
+    }
+    .midi-value {
+      width: $knobSize * 0.18;
+      display: inline-block;
+      text-align: right;
+    }
   }
 }
 

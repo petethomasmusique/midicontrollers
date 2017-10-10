@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import MidiController from "./containers/Knobs_container";
+import Knobs from "./containers/Knobs";
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-        <MidiController />
+        <Knobs />
       </div>
     );
   }

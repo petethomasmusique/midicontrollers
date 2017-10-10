@@ -1,19 +1,24 @@
 import React from 'react';
 import '../css/output.css';
 
-export default ({id, value, onMouseDown, onMouseMove, onMouseUp, onMouseLeave }) => (
-	<div id={ "knob-" + id } className="knob-container">
-		<div 
+export default ({id, knobs, mouseDown, mouseMove, mouseUp, mouseLeave }) => (
+	<div className="knob-container">
+		<div
+			id={ "knob-" + id } 
 			className="knob-background" 
-			onMouseDown={ onMouseDown } 
-			onMouseUp={ onMouseUp } 
-			onMouseMove={ onMouseMove } 
-			onMouseLeave={ onMouseLeave} 
+			onMouseDown={ () => mouseDown(true) } 
+			onMouseMove={ (e) => mouseMove(e, id) } 
+			onMouseUp={ () => mouseDown(false) } 
+			onMouseLeave={ (e) => mouseLeave(e, id)} 
 		>
-		    <div className="face" style={{transform: "rotate(" + (value + 20)  + "deg)"}}>
+		    <div className="face" style={{transform: "rotate(" + ((knobs.getIn([id, 'value']) * 2.52) + 20)  + "deg)"}}>
 		      <div className="position"></div>
 		    </div>
 		</div>
-		<input type="text" name="label" className="knob-label"/>
+		<div className="knob-info">
+			<div className="midi-channel"><small>{ knobs.getIn([id, 'channel']) }</small></div>
+			<div className="knob-label">{ knobs.getIn([id, 'label']) }</div>
+			<div className="midi-value"><small>{ knobs.getIn([id, 'value']) }</small></div>
+		</div>
 	</div>
 )
