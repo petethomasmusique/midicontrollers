@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/output.css';
 
-export default ({id, knobs, mouseDown, updateDial, updateDialmouseLeave }) => (
+export default ({id, knobs, mouseDown, updateDial, mouseLeave }) => (
 	<div className="knob-container">
 		<div
 			id={ "knob-" + id } 
@@ -9,7 +9,7 @@ export default ({id, knobs, mouseDown, updateDial, updateDialmouseLeave }) => (
 			onMouseDown={ () => mouseDown(true) } 
 			onMouseMove={ (e) => updateDial(e, id) } 
 			onMouseUp={ () => mouseDown(false) } 
-			onMouseLeave={ (e) => updateDial(e, id)} 
+			onMouseLeave={ (e) => mouseLeave(e, id)} 
 		>
 		    <div className="face" style={{transform: "rotate(" + ((knobs.getIn([id, 'value']) * 2.52) + 20)  + "deg)"}}>
 		      <div className="position"></div>

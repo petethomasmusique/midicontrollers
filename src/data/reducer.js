@@ -2,23 +2,28 @@ import initial from "./initial";
 import WebMidi from '../../node_modules/webmidi';
 
 import { UPDATE_MOUSEDOWN } from "./actions";
+import { MOUSELEAVE } from "./actions";
 import { UPDATE_DIAL } from "./actions";
-import { UPDATE_DIALMOUSELEAVE } from "./actions";
 import { UPDATE_FADER } from "./actions";
-import { UPDATE_FADERMOUSELEAVE } from "./actions";
 
 const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
 }
+const mouseLeave = (state, { event, id }) => {
+	if (state.get('mouseDown')) {
+		return state.set('mouseDown', false);
+	}
+	return state;
+} 
 const updateDial = (state, { event, id }) => {
   	if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
 		let knobInfo = knob.getBoundingClientRect();
   		let newValue = Math.floor(127 - (event.clientY - knobInfo.y) * (127/knobInfo.height));
-	    if (newValue < 0) {
+	    if (newValue < 3) {
 	    	sendMidi(id, 0);
 	    	return state.setIn(['knobs', id, 'value'], 0);
-	    } else if (newValue > 127) {
+	    } else if (newValue > 124) {
 	    	sendMidi(id, 127);
 	    	return state.setIn(['knobs', id, 'value'], 127);
 	    } else {
@@ -28,17 +33,6 @@ const updateDial = (state, { event, id }) => {
 	}
 	return state;
 };
-
-const updateDialMouseLeave = (state, { event, id }) => {
-	if (state.get('mouseDown')) {
-		if (state.getIn(['knobs', id, 'value']) > 120) {
-			return state.setIn(['knobs', id, 'value'], 127).set('mouseDown', false);
-		} else if (state.getIn(['knobs', id, 'value']) < 5) {
-			return state.setIn(['knobs', id, 'value'], 0).set('mouseDown', false);
-		}
-	}
-	return state;
-}
 
 const updateFader = (state, { event, id}) => {
 	console.log(state.getIn(['faders', id, 'midiValue']));
@@ -64,12 +58,6 @@ const updateFader = (state, { event, id}) => {
 	return state;
 }
 
-const updateFaderMouseLeave = (state, { event, id }) => {
-	if (state.get('mouseDown')) {
-		return state.set('mouseDown', false);
-	}
-	return state;
-} 
 
 // TODO can you combine the mouse leave into update function? Would it work to just run the update function on mouse
 // TODO can you combine the dial and fader update, passing in the type of component that it is?
@@ -88,9 +76,8 @@ export default (state = initial, action) => {
 	switch (action.type) {
 		case UPDATE_MOUSEDOWN: return updateMouseDown(state, action);
 		case UPDATE_DIAL: return updateDial(state, action);
-		case UPDATE_DIALMOUSELEAVE: return updateDialMouseLeave(state, action);
 		case UPDATE_FADER: return updateFader(state, action);
-		case UPDATE_FADERMOUSELEAVE: return updateFaderMouseLeave(state, action);
+		case MOUSELEAVE: return mouseLeave(state, action);
 		default: return state;
 	}
 };

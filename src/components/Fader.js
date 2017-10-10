@@ -1,14 +1,14 @@
 import React from 'react';
 import '../css/output.css';
 
-export default ({id, faders, mouseDown, updateFader, updateFaderMouseLeave }) => (
+export default ({id, faders, mouseDown, updateFader, mouseLeave }) => (
 	<div className="fader-container">
 		<div 
 			className="fader-background" 
 			onMouseDown={ () => mouseDown(true) } 
 			onMouseMove={ (e) => updateFader(e, id) } 
 			onMouseUp={ () => mouseDown(false) } 
-			onMouseLeave={ (e) => updateFaderMouseLeave(e, id)} 
+			onMouseLeave={ (e) => mouseLeave(e, id)} 
 		>
 		    <div id={ "fader-" + id } className="fader-inset">
 		      <div className="fader-position" style={{top: faders.getIn([id, 'value'])}}></div>
