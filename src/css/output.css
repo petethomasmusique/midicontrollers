@@ -99,4 +99,10 @@ body {
       margin-top: 0;
       margin-bottom: 0; }
 
+.sequencer-square {
+  width: 46.25px;
+  height: 46.25px;
+  margin: 5px;
+  display: inline-block; }
+
 /*# sourceMappingURL=output.css.map */

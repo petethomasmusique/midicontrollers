@@ -1,0 +1,8 @@
+$squareSize: $componentScale/2 - (($spacing*3)/4);
+
+.sequencer-square {
+	width: $squareSize;
+	height: $squareSize;
+	margin: $spacing;
+	display: inline-block;
+}
