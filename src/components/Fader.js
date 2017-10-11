@@ -15,9 +15,9 @@ export default ({id, faders, mouseDown, updateFader, mouseLeave }) => (
 		    </div>
 		</div>
 		<div className="fader-info">
-			<div className="midi-channel"><small>{ faders.getIn([id, 'channel']) }</small></div>
+			<div className="midi-channel">{ faders.getIn([id, 'channel']) }</div>
+			<div className="midi-value">{ faders.getIn([id, 'midiValue']) }</div>
 			<div className="fader-label">{ faders.getIn([id, 'label']) }</div>
-			<div className="midi-value"><small>{ faders.getIn([id, 'midiValue']) }</small></div>
 		</div>
 	</div>
 )

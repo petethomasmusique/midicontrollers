@@ -10,9 +10,9 @@ $lightText: #FFF;
 //  Dimensions
 //#####################################################
 
-$spacing: 5px;
-$componentScale: 150px;
-$textSize: 14px;
+$componentScale: 100px; // TODO sort out the scaling of text, looks wierd when very small and when very big
+$spacing: $componentScale * 0.05;;
+$textSize: $componentScale * 0.17;
 
 //#####################################################
 //  Generic Styles
