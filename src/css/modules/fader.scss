@@ -33,25 +33,26 @@ $height: 2*$componentScale;
 	    color: $lightText;
 	    border-radius: 0 0 4px 4px;
 	    background-color: $light;
-	    padding-left: $width * 0.02;
-	    padding-right: $width * 0.02;
 	    padding-top: $width * 0.01;
 	    font-size: $textSize; 
 	    .midi-channel {
-	      width: $width * 0.18;
+	    padding-left: $width * 0.1;
+	      width: $width * 0.4;
 	      display: inline-block;
+	      font-size: $textSize*0.6; 
+	    }
+	    .midi-value {
+	    padding-right: $width * 0.1;
+	      width: $width * 0.4;
+	      display: inline-block;
+	      text-align: right;
+	      font-size: $textSize*0.6;
 	    }
 	    .fader-label {
-	      width: $width * 0.6;
+	      // width: $width;
 	      text-align: center;
 	      margin-top: 0;
 	      margin-bottom: 0; 
-	      display: inline-block;
-	    }
-	    .midi-value {
-	      width: $width * 0.18;
-	      display: inline-block;
-	      text-align: right;
 	    }
 	}
 }
