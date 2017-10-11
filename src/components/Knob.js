@@ -1,3 +1,5 @@
+// TODO make knob function more like the fader with a value and a midiValue...
+
 import React from 'react';
 import '../css/output.css';
 
