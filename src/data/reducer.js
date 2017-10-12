@@ -5,6 +5,7 @@ import { UPDATE_MOUSEDOWN } from "./actions";
 import { MOUSELEAVE } from "./actions";
 import { UPDATE_DIAL } from "./actions";
 import { UPDATE_FADER } from "./actions";
+import { ONCLICK_SQUARE} from "./actions";
 
 const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
@@ -16,6 +17,7 @@ const mouseLeave = (state, { event, id }) => {
 	return state;
 } 
 const updateDial = (state, { event, id }) => {
+	console.log(state.toJS);
   	if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
 		let knobInfo = knob.getBoundingClientRect();
@@ -68,12 +70,26 @@ const sendMidi = (id, val) => {
 	});
 }
 
+const onClickSquare = (state, { id }) => {
+	let square = state.getIn(['sequencer', id]);
+	if (square.get('velocity') === 0) {
+		return state.setIn(['sequencer', id, 'colour'], '#474747').setIn(['sequencer', id, 'velocity'], 127);
+	}else if (square.get('velocity') === 127) {
+		return state.setIn(['sequencer', id, 'colour'], '#828282').setIn(['sequencer', id, 'velocity'], 90);
+	} else if (square.get('velocity') === 90) {
+		return state.setIn(['sequencer', id, 'colour'], '#A9A9A9').setIn(['sequencer', id, 'velocity'], 60);
+	} else if (square.get('velocity') === 60) {
+		return state.setIn(['sequencer', id, 'colour'], '#DCDCDC').setIn(['sequencer', id, 'velocity'], 0);
+	}
+}
+
 export default (state = initial, action) => {
 	switch (action.type) {
 		case UPDATE_MOUSEDOWN: return updateMouseDown(state, action);
 		case UPDATE_DIAL: return updateDial(state, action);
 		case UPDATE_FADER: return updateFader(state, action);
 		case MOUSELEAVE: return mouseLeave(state, action);
+		case ONCLICK_SQUARE: return onClickSquare(state, action);
 		default: return state;
 	}
 };

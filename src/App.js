@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Knobs from "./containers/Knobs";
 import Faders from "./containers/Faders";
-import Square from "./components/Square";
+import Squares from "./containers/Squares";
 
 class App extends Component {
   render() {
@@ -9,10 +9,7 @@ class App extends Component {
       <div className="App">
         <Knobs />
       	<Faders />
-      	<Square />
-      	<Square />
-      	<Square />
-      	<Square />
+        <Squares />
       </div>
     );
   }
