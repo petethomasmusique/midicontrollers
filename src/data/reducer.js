@@ -1,5 +1,5 @@
 import initial from "./initial";
-import WebMidi from '../../node_modules/webmidi';
+import WebMidi from 'webmidi';
 
 import { UPDATE_MOUSEDOWN } from "./actions";
 import { ONMOUSEDOWN_SQUARE } from "./actions";
@@ -8,6 +8,19 @@ import { MOUSELEAVE } from "./actions";
 import { UPDATE_DIAL } from "./actions";
 import { UPDATE_FADER } from "./actions";
 import { ONCLICK_SQUARE} from "./actions";
+
+WebMidi.enable(function(err) {
+	if (!err) {
+		console.log('webmidi enabled');
+	} else {
+		console.log('webmidi failed');
+	}
+});
+
+// console.log(WebMidi.getOutputByName("to Max 1"));
+
+// this.midiOut = WebMidi.getOutputByName("to Max 1");
+// console.log(this.midiOut);
 
 const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
@@ -19,7 +32,6 @@ const mouseLeave = (state, { event, id }) => {
 	return state;
 } 
 const updateDial = (state, { event, id }) => {
-	console.log(state.toJS);
   	if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
 		let knobInfo = knob.getBoundingClientRect();
@@ -39,19 +51,19 @@ const updateDial = (state, { event, id }) => {
 };
 
 const updateFader = (state, { event, id}) => {
-  if (state.get('mouseDown')) {
+  	if (state.get('mouseDown')) {
 		let fader = document.getElementById("fader-" + id);
 		let faderInfo = fader.getBoundingClientRect();
 		let faderHeight = faderInfo.height - fader.childNodes[0].getBoundingClientRect().height; // takes into account size of fader notch
 		let faderPosition = (event.clientY - faderInfo.y);
 		let midiValue = 127 - Math.floor(faderPosition * (127/faderHeight));
 		if (midiValue < 0) {
-    	return setFader(state, id, faderHeight, 0);
-    } else if (midiValue > 127) {
-    	return setFader(state, id, 0, 127);
-    } else {
-    	return setFader(state, id, faderPosition, midiValue);
-    }
+    		return setFader(state, id, faderHeight, 0);
+	    } else if (midiValue > 127) {
+	    	return setFader(state, id, 0, 127);
+	    } else {
+	    	return setFader(state, id, faderPosition, midiValue);
+	    }
 	}
 	return state;
 }
@@ -63,13 +75,16 @@ const setFader = (state, id, value, midiValue) => {
 // TODO can you combine the dial and fader update, passing in the type of component that it is?
 
 const sendMidi = (id, val) => {
-	WebMidi.enable(function(err) {
-		if (!err) {
-			this.midiOut = WebMidi.getOutputByName("to Max 1"); 
-			this.midiOut.sendControlChange( id, val );
-			WebMidi.disable();
-		}
-	});
+	let midiOut = WebMidi.getOutputByName("to Max 1"); 
+	midiOut.sendControlChange( id, val );
+
+	// WebMidi.enable(function(err) {
+	// 	if (!err) {
+	// 		this.midiOut = WebMidi.getOutputByName("to Max 1"); 
+	// 		this.midiOut.sendControlChange( id, val );
+	// 		WebMidi.disable();
+	// 	}
+	// });
 }
 
 // sets the state for the squares, including colour and velocity
@@ -93,22 +108,7 @@ const sendSysEx = (id, vel) => {
 	}, true);
 }
 
-// const onClickSquare = (state, { id }) => {
-// 	let squareVel = state.getIn(['sequencer', id, 'velocity']);
-// 	if (squareVel === 0) {
-// 		sendSysEx(id, 127);
-// 		return setSquare(state, id, '#474747', 127);
-// 	}else if (squareVel === 127) {
-// 		sendSysEx(id, 90);
-// 		return setSquare(state, id, '#828282', 90);
-// 	} else if (squareVel === 90) {
-// 		sendSysEx(id, 60);
-// 		return setSquare(state, id, '#A9A9A9', 60);
-// 	} else if (squareVel === 60) {
-// 		sendSysEx(id, 0);
-// 		return setSquare(state, id, '#DCDCDC', 0);
-// 	}
-// }
+// const receiveSysEx
 
 const onMouseDownSquare = (state, { id }) => {
 	sendSysEx(id, 1);
@@ -126,7 +126,6 @@ export default (state = initial, action) => {
 		case UPDATE_DIAL: return updateDial(state, action);
 		case UPDATE_FADER: return updateFader(state, action);
 		case MOUSELEAVE: return mouseLeave(state, action);
-		// case ONCLICK_SQUARE: return onClickSquare(state, action);
 		case ONMOUSEDOWN_SQUARE: return onMouseDownSquare(state, action);
 		case ONMOUSEUP_SQUARE: return onMouseUpSquare(state, action);
 		default: return state;
