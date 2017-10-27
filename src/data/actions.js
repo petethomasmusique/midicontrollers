@@ -3,7 +3,9 @@ export const UPDATE_MOUSEDOWN = Symbol("UPDATE_MOUSEDOWN");
 export const MOUSELEAVE = Symbol("MOUSELEAVE");
 export const UPDATE_DIAL = Symbol("UPDATE_DIAL");
 export const UPDATE_FADER = Symbol("UPDATE_FADER");
-export const ONCLICK_SQUARE = Symbol("ONCLICK_SQUARE");
+// export const ONCLICK_SQUARE = Symbol("ONCLICK_SQUARE");
+export const ONMOUSEDOWN_SQUARE = Symbol("ONMOUSEDOWN_SQUARE")
+export const ONMOUSEUP_SQUARE = Symbol("ONMOUSEUP_SQUARE")
 
 // the container will need these
 export const updateMouseDown = (bool) => ({
@@ -29,7 +31,17 @@ export const updateFader = (event, id) => ({
     id,
 });
 
-export const onClickSquare = (id) => ({
-    type: ONCLICK_SQUARE,
+// export const onClickSquare = (id) => ({
+//     type: ONCLICK_SQUARE,
+//     id,
+// });
+
+export const onMouseDownSquare = (id) => ({
+    type: ONMOUSEDOWN_SQUARE,
+    id,
+});
+
+export const onMouseUpSquare = (id) => ({
+    type: ONMOUSEUP_SQUARE,
     id,
 });

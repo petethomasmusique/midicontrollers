@@ -2,6 +2,8 @@ import initial from "./initial";
 import WebMidi from '../../node_modules/webmidi';
 
 import { UPDATE_MOUSEDOWN } from "./actions";
+import { ONMOUSEDOWN_SQUARE } from "./actions";
+import { ONMOUSEUP_SQUARE } from "./actions";
 import { MOUSELEAVE } from "./actions";
 import { UPDATE_DIAL } from "./actions";
 import { UPDATE_FADER } from "./actions";
@@ -78,29 +80,45 @@ const setSquare = (state, id, colour, velocity) => {
 
 // handles the sending of System Exclusive messages - essentially a way of sending arrays of data to other devices.
 const sendSysEx = (id, vel) => {
-	// convert the id into an x,y co-ordinate
 	let x = id % 16;
 	let y = Math.floor(id / 16);
-	console.log([x, y, vel]); 
+	WebMidi.enable(function(err) {
+		if (!err) {
+			this.midiOut = WebMidi.getOutputByName("to Max 1"); 
+			WebMidi.outputs[0].sendSysex(0x00, [x, y, vel]);
+			WebMidi.disable();
+		} else {
+			console.log('error sending SysEx');
+		}
+	}, true);
 }
 
-const onClickSquare = (state, { id }) => {
-	let squareVel = state.getIn(['sequencer', id, 'velocity']);
-	if (squareVel === 0) {
-		sendSysEx(id, 127);
-		return setSquare(state, id, '#474747', 127);
-	}else if (squareVel === 127) {
-		sendSysEx(id, 90);
-		return setSquare(state, id, '#828282', 90);
-	} else if (squareVel === 90) {
-		sendSysEx(id, 60);
-		return setSquare(state, id, '#A9A9A9', 60);
-	} else if (squareVel === 60) {
-		sendSysEx(id, 0);
-		return setSquare(state, id, '#DCDCDC', 0);
-	}
+// const onClickSquare = (state, { id }) => {
+// 	let squareVel = state.getIn(['sequencer', id, 'velocity']);
+// 	if (squareVel === 0) {
+// 		sendSysEx(id, 127);
+// 		return setSquare(state, id, '#474747', 127);
+// 	}else if (squareVel === 127) {
+// 		sendSysEx(id, 90);
+// 		return setSquare(state, id, '#828282', 90);
+// 	} else if (squareVel === 90) {
+// 		sendSysEx(id, 60);
+// 		return setSquare(state, id, '#A9A9A9', 60);
+// 	} else if (squareVel === 60) {
+// 		sendSysEx(id, 0);
+// 		return setSquare(state, id, '#DCDCDC', 0);
+// 	}
+// }
+
+const onMouseDownSquare = (state, { id }) => {
+	sendSysEx(id, 1);
+	return state;
 }
 
+const onMouseUpSquare = (state, { id }) => {
+	sendSysEx(id, 0);
+	return state;
+}
 
 export default (state = initial, action) => {
 	switch (action.type) {
@@ -108,7 +126,9 @@ export default (state = initial, action) => {
 		case UPDATE_DIAL: return updateDial(state, action);
 		case UPDATE_FADER: return updateFader(state, action);
 		case MOUSELEAVE: return mouseLeave(state, action);
-		case ONCLICK_SQUARE: return onClickSquare(state, action);
+		// case ONCLICK_SQUARE: return onClickSquare(state, action);
+		case ONMOUSEDOWN_SQUARE: return onMouseDownSquare(state, action);
+		case ONMOUSEUP_SQUARE: return onMouseUpSquare(state, action);
 		default: return state;
 	}
 };
