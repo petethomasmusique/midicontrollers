@@ -32,7 +32,7 @@ const updateDial = (state, { event, id }) => {
 	    	sendMidi(id, newValue);
 	    	return state.setIn(['knobs', id, 'value'], newValue);
 	    }
-		}
+	}
 	return state;
 };
 
@@ -70,18 +70,23 @@ const sendMidi = (id, val) => {
 	});
 }
 
+const setSquare = (state, colour, velocity) => {
+	return state.setIn(['sequencer', id, 'colour'], colour).setIn(['sequencer', id, 'velocity'], velocity);
+}
+
 const onClickSquare = (state, { id }) => {
-	let square = state.getIn(['sequencer', id]);
-	if (square.get('velocity') === 0) {
-		return state.setIn(['sequencer', id, 'colour'], '#474747').setIn(['sequencer', id, 'velocity'], 127);
-	}else if (square.get('velocity') === 127) {
-		return state.setIn(['sequencer', id, 'colour'], '#828282').setIn(['sequencer', id, 'velocity'], 90);
-	} else if (square.get('velocity') === 90) {
-		return state.setIn(['sequencer', id, 'colour'], '#A9A9A9').setIn(['sequencer', id, 'velocity'], 60);
-	} else if (square.get('velocity') === 60) {
-		return state.setIn(['sequencer', id, 'colour'], '#DCDCDC').setIn(['sequencer', id, 'velocity'], 0);
+	let squareVel = state.getIn(['sequencer', id, 'velocity']);
+	if (squareVel === 0) {
+		return setSquare(state, '#474747', 127);
+	}else if (squareVel === 127) {
+		return setSquare(state, '#828282', 90);
+	} else if (squareVel === 90) {
+		return setSquare(state, '#A9A9A9', 60);
+	} else if (squareVel === 60) {
+		return setSquare(state, '#DCDCDC', 0);
 	}
 }
+
 
 export default (state = initial, action) => {
 	switch (action.type) {
