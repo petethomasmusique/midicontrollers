@@ -70,20 +70,34 @@ const sendMidi = (id, val) => {
 	});
 }
 
-const setSquare = (state, colour, velocity) => {
-	return state.setIn(['sequencer', id, 'colour'], colour).setIn(['sequencer', id, 'velocity'], velocity);
+// sets the state for the squares, including colour and velocity
+const setSquare = (state, id, colour, velocity) => {
+	return state.setIn(['sequencer', id, 'colour'], colour)
+				.setIn(['sequencer', id, 'velocity'], velocity);
+}
+
+// handles the sending of System Exclusive messages - essentially a way of sending arrays of data to other devices.
+const sendSysEx = (id, vel) => {
+	// convert the id into an x,y co-ordinate
+	let x = id % 16;
+	let y = Math.floor(id / 16);
+	console.log([x, y, vel]); 
 }
 
 const onClickSquare = (state, { id }) => {
 	let squareVel = state.getIn(['sequencer', id, 'velocity']);
 	if (squareVel === 0) {
-		return setSquare(state, '#474747', 127);
+		sendSysEx(id, 127);
+		return setSquare(state, id, '#474747', 127);
 	}else if (squareVel === 127) {
-		return setSquare(state, '#828282', 90);
+		sendSysEx(id, 90);
+		return setSquare(state, id, '#828282', 90);
 	} else if (squareVel === 90) {
-		return setSquare(state, '#A9A9A9', 60);
+		sendSysEx(id, 60);
+		return setSquare(state, id, '#A9A9A9', 60);
 	} else if (squareVel === 60) {
-		return setSquare(state, '#DCDCDC', 0);
+		sendSysEx(id, 0);
+		return setSquare(state, id, '#DCDCDC', 0);
 	}
 }
 
