@@ -12,15 +12,14 @@ import { ONCLICK_SQUARE} from "./actions";
 WebMidi.enable(function(err) {
 	if (!err) {
 		console.log('webmidi enabled');
+		let input = WebMidi.getInputByName("from Max 1");
+		input.addListener('sysex', "all", function (e) {
+			console.log(e);
+    	});
 	} else {
 		console.log('webmidi failed');
 	}
-});
-
-// console.log(WebMidi.getOutputByName("to Max 1"));
-
-// this.midiOut = WebMidi.getOutputByName("to Max 1");
-// console.log(this.midiOut);
+}, true);
 
 const updateMouseDown = (state, { bool }) => {
 	return state.set("mouseDown", bool);
@@ -75,16 +74,8 @@ const setFader = (state, id, value, midiValue) => {
 // TODO can you combine the dial and fader update, passing in the type of component that it is?
 
 const sendMidi = (id, val) => {
-	let midiOut = WebMidi.getOutputByName("to Max 1"); 
-	midiOut.sendControlChange( id, val );
-
-	// WebMidi.enable(function(err) {
-	// 	if (!err) {
-	// 		this.midiOut = WebMidi.getOutputByName("to Max 1"); 
-	// 		this.midiOut.sendControlChange( id, val );
-	// 		WebMidi.disable();
-	// 	}
-	// });
+	WebMidi.getOutputByName("to Max 1") 
+		   .sendControlChange( id, val );
 }
 
 // sets the state for the squares, including colour and velocity
@@ -97,18 +88,9 @@ const setSquare = (state, id, colour, velocity) => {
 const sendSysEx = (id, vel) => {
 	let x = id % 16;
 	let y = Math.floor(id / 16);
-	WebMidi.enable(function(err) {
-		if (!err) {
-			this.midiOut = WebMidi.getOutputByName("to Max 1"); 
-			WebMidi.outputs[0].sendSysex(0x00, [x, y, vel]);
-			WebMidi.disable();
-		} else {
-			console.log('error sending SysEx');
-		}
-	}, true);
+	WebMidi.getOutputByName("to Max 1") 
+		   .sendSysex(0x00, [x, y, vel]);
 }
-
-// const receiveSysEx
 
 const onMouseDownSquare = (state, { id }) => {
 	sendSysEx(id, 1);
