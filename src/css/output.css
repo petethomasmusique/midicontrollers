@@ -1,5 +1,6 @@
 body {
-  font-family: 'Comfortaa', cursive; }
+  font-family: 'Comfortaa', cursive;
+  background: #fdf9f3; }
 
 .knob-container {
   margin: 5px;
@@ -98,5 +99,31 @@ body {
       text-align: center;
       margin-top: 0;
       margin-bottom: 0; }
+
+.sequencer-square-container {
+  padding-top: 2.5px;
+  padding-bottom: 2.5px;
+  width: 650px;
+  margin: 5px;
+  border-radius: 1px;
+  display: inline-block;
+  background-color: #baabab; }
+
+.sequencer-square {
+  width: 37.96875px;
+  height: 37.96875px;
+  display: inline-block;
+  border-radius: 5%;
+  background-color: #FFF;
+  margin-left: 2.5px;
+  margin-bottom: -2.5px; }
+  .sequencer-square .sequencer-square-inset {
+    width: 30.375px;
+    height: 30.375px;
+    position: relative;
+    top: 3.79688px;
+    left: 3.79688px;
+    border-radius: 5%;
+    margin: 0px; }
 
 /*# sourceMappingURL=output.css.map */

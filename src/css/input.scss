@@ -20,6 +20,7 @@ $textSize: $componentScale * 0.17;
 
 body {
 	font-family: 'Comfortaa', cursive;
+	background: #fdf9f3;
 }
 //#####################################################
 //  Module Imports
@@ -30,3 +31,6 @@ body {
 
 // fader
 @import 'modules/fader';
+
+// step sequencer
+@import 'modules/step-sequencer';
