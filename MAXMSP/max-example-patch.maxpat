@@ -92,12 +92,12 @@
 					"fontsize" : 12.0,
 					"frgb" : 0.0,
 					"id" : "obj-11",
-					"linecount" : 15,
+					"linecount" : 14,
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
 					"patching_rect" : [ 336.709991, 175.889984, 466.690002, 208.0 ],
-					"text" : "Messages to the grid take the format [a, b, x, y, z], where:\n\na - command (see below)\ng - grid number (default 0 but allows for multiple grids in future)\nx - co-ordinate\ny - co-ordinate\nz - value (0-127)\n\nCommands:\n\n[0, g, x, y, z] set single square\n[1, g, x, y, z] effect whole grid ( x,y are ignored, z is the value)\n[2, g, x, y, z] effect whole row (x is ignored, y is the row, z is the value)\n[3, g, x, y, z] effect whole column (x is the column, y is ignored, z is the value)\n"
+					"text" : "Messages to the grid take the format [a, b, x, y, z], where:\n\na - command (see below)\ng - grid number (default 0 but allows for multiple grids in future)\nx - co-ordinate\ny - co-ordinate\nz - value (0-127)\n\nCommands:\n\n[0, g, x, y, z] set single square\n[1, g, x, y, z] set grid ( x,y are ignored, z is the value)\n[2, g, x, y, z] set row (x is ignored, y is the row, z is the value)\n[3, g, x, y, z] set column (x is the column, y is ignored, z is the value)\n"
 				}
 
 			}
@@ -207,7 +207,7 @@
 					"numoutlets" : 2,
 					"outlettype" : [ "int", "int" ],
 					"patching_rect" : [ 417.0, 28.0, 52.0, 20.0 ],
-					"text" : "ctlin a 0"
+					"text" : "ctlin a 6"
 				}
 
 			}

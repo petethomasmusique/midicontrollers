@@ -1,6 +1,5 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
-import { connect } from "react-redux";
 
 import { ONMOUSEDOWN_FADERDIAL } from "./actions";
 import { ONMOUSELEAVE_FADERDIAL } from "./actions";
