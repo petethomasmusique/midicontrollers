@@ -2,9 +2,9 @@ export const ONMOUSEDOWN_FADERDIAL = Symbol("ONMOUSEDOWN_FADERDIAL");
 export const ONMOUSELEAVE_FADERDIAL = Symbol("ONMOUSELEAVE_FADERDIAL");
 export const UPDATE_DIAL = Symbol("UPDATE_DIAL");
 export const UPDATE_FADER = Symbol("UPDATE_FADER");
-// export const ONCLICK_SQUARE = Symbol("ONCLICK_SQUARE");
 export const ONMOUSEDOWN_SQUARE = Symbol("ONMOUSEDOWN_SQUARE")
 export const ONMOUSEUP_SQUARE = Symbol("ONMOUSEUP_SQUARE")
+export const ONSETSQUARE = Symbol("ONSETSQUARE");
 
 /********************************************************************/
 /*Dials and Faders **************************************************/
@@ -37,10 +37,10 @@ export const updateFader = (event, id) => ({
 /*Grid **************************************************************/
 /********************************************************************/
 
-// export const onClickSquare = (id) => ({
-//     type: ONCLICK_SQUARE,
-//     id,
-// });
+export const onSetSquare = (data) => ({
+    type: ONSETSQUARE,
+    data,
+})
 
 export const onMouseDownSquare = (id) => ({
     type: ONMOUSEDOWN_SQUARE,

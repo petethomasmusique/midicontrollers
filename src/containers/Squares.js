@@ -1,6 +1,5 @@
 import { connect } from "react-redux";
 import Squares from "../components/Squares";
-// import { onClickSquare } from "../data/actions";
 import { onMouseUpSquare } from "../data/actions";
 import { onMouseDownSquare } from "../data/actions";
 
@@ -9,7 +8,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    // onClickSquare: (id) => dispatch(onClickSquare(id)),
     onMouseDownSquare: (id) => dispatch(onMouseDownSquare(id)),
     onMouseUpSquare: (id) => dispatch(onMouseUpSquare(id)),
 }) 

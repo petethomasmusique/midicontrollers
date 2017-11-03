@@ -1,5 +1,5 @@
 # MIDI controller
-### A project made with React, WebMidi.js and (optionally) MAXMSP to handle the sound. 
+### A project made with React, Redux, WebMidi.js and (optionally) MAXMSP to handle the sound. 
 
 Work in Progress:
 
@@ -22,6 +22,7 @@ App bits and bobs
 - Title
 - Instructions
 - switch off cursor highlighting default
+- lots of duplicate code in fader/dial to tidy up
 
 The aim of this project is to build a completely neutral controller to make interacting with data fluid and flexible on a project by project basis. Credit to <a href="https://github.com/cotejp/webmidi">WebMidi.js</a> for an excellent library that simplifies use of the Web Midi API and <a href="https://monome.org/">Monome</a>, whose beautifully designed Grid I'm using as inspiration.
 
