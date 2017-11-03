@@ -1,35 +1,43 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
 
-import { UPDATE_MOUSEDOWN } from "./actions";
-import { ONMOUSEDOWN_SQUARE } from "./actions";
-import { ONMOUSEUP_SQUARE } from "./actions";
-import { MOUSELEAVE } from "./actions";
+import { ONMOUSEDOWN_FADERDIAL } from "./actions";
+import { ONMOUSELEAVE_FADERDIAL } from "./actions";
 import { UPDATE_DIAL } from "./actions";
 import { UPDATE_FADER } from "./actions";
-import { ONCLICK_SQUARE} from "./actions";
+import { ONMOUSEDOWN_SQUARE } from "./actions";
+import { ONMOUSEUP_SQUARE } from "./actions";
+// import { ONCLICK_SQUARE} from "./actions";
+
+/********************************************************************/
+/*WebMidi (TODO: MOVE) **********************************************/
+/********************************************************************/
 
 WebMidi.enable(function(err) {
 	if (!err) {
-		console.log('webmidi enabled');
-		let input = WebMidi.getInputByName("from Max 1");
+		let input = WebMidi.getInputByName("from Max 1"); // TODO: Allow this to be changed when user chooses device
 		input.addListener('sysex', "all", function (e) {
-			console.log(e);
+			receiveSysEx(e.data);
     	});
 	} else {
 		console.log('webmidi failed');
 	}
 }, true);
 
-const updateMouseDown = (state, { bool }) => {
+/********************************************************************/
+/*Dials and Faders **************************************************/
+/********************************************************************/
+
+const onMouseDownFaderDial = (state, { bool }) => {
 	return state.set("mouseDown", bool);
 }
-const mouseLeave = (state, { event, id }) => {
+const onMouseLeaveFaderDial = (state, { event, id }) => {
 	if (state.get('mouseDown')) {
 		return state.set('mouseDown', false);
 	}
 	return state;
 } 
+
 const updateDial = (state, { event, id }) => {
   	if (state.get('mouseDown')) {
 		let knob = document.getElementById("knob-" + id);
@@ -57,26 +65,29 @@ const updateFader = (state, { event, id}) => {
 		let faderPosition = (event.clientY - faderInfo.y);
 		let midiValue = 127 - Math.floor(faderPosition * (127/faderHeight));
 		if (midiValue < 0) {
-    		return setFader(state, id, faderHeight, 0);
+			sendMidi(id, 0);
+			return state.setIn(['faders', id, 'value'], faderHeight).setIn(['faders', id, 'midiValue'], 0);
 	    } else if (midiValue > 127) {
-	    	return setFader(state, id, 0, 127);
+	    	sendMidi(id, 127);
+			return state.setIn(['faders', id, 'value'], 0).setIn(['faders', id, 'midiValue'], 127);
 	    } else {
-	    	return setFader(state, id, faderPosition, midiValue);
+	    	sendMidi(id, midiValue);
+			return state.setIn(['faders', id, 'value'], faderPosition).setIn(['faders', id, 'midiValue'], midiValue);
 	    }
 	}
 	return state;
 }
 
-const setFader = (state, id, value, midiValue) => {
-	sendMidi(id, midiValue);
-	return state.setIn(['faders', id, 'value'], value).setIn(['faders', id, 'midiValue'], midiValue);
-}
 // TODO can you combine the dial and fader update, passing in the type of component that it is?
 
 const sendMidi = (id, val) => {
 	WebMidi.getOutputByName("to Max 1") 
 		   .sendControlChange( id, val );
 }
+
+/********************************************************************/
+/*Grid **************************************************************/
+/********************************************************************/
 
 // sets the state for the squares, including colour and velocity
 const setSquare = (state, id, colour, velocity) => {
@@ -85,11 +96,26 @@ const setSquare = (state, id, colour, velocity) => {
 }
 
 // handles the sending of System Exclusive messages - essentially a way of sending arrays of data to other devices.
-const sendSysEx = (id, vel) => {
+const sendSysEx = (id, val) => {
 	let x = id % 16;
 	let y = Math.floor(id / 16);
 	WebMidi.getOutputByName("to Max 1") 
-		   .sendSysex(0x00, [x, y, vel]);
+		   .sendSysex(1, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
+}
+
+const receiveSysEx = (data) => {
+	// remove SysEx start/end data
+	let message = [].slice.call(data.slice(1, 6));
+	switch (message[0]) {
+		case 0: // set single square
+			setSquare()
+			break;
+		case 1: // set whole grid
+		case 2: // set row
+		case 3: // set column
+
+	}
+	console.log(message);
 }
 
 const onMouseDownSquare = (state, { id }) => {
@@ -104,10 +130,10 @@ const onMouseUpSquare = (state, { id }) => {
 
 export default (state = initial, action) => {
 	switch (action.type) {
-		case UPDATE_MOUSEDOWN: return updateMouseDown(state, action);
+		case ONMOUSEDOWN_FADERDIAL: return onMouseDownFaderDial(state, action);
+		case ONMOUSELEAVE_FADERDIAL: return onMouseLeaveFaderDial(state, action);
 		case UPDATE_DIAL: return updateDial(state, action);
 		case UPDATE_FADER: return updateFader(state, action);
-		case MOUSELEAVE: return mouseLeave(state, action);
 		case ONMOUSEDOWN_SQUARE: return onMouseDownSquare(state, action);
 		case ONMOUSEUP_SQUARE: return onMouseUpSquare(state, action);
 		default: return state;

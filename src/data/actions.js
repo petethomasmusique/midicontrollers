@@ -1,20 +1,22 @@
-// the reducer will need these
-export const UPDATE_MOUSEDOWN = Symbol("UPDATE_MOUSEDOWN");
-export const MOUSELEAVE = Symbol("MOUSELEAVE");
+export const ONMOUSEDOWN_FADERDIAL = Symbol("ONMOUSEDOWN_FADERDIAL");
+export const ONMOUSELEAVE_FADERDIAL = Symbol("ONMOUSELEAVE_FADERDIAL");
 export const UPDATE_DIAL = Symbol("UPDATE_DIAL");
 export const UPDATE_FADER = Symbol("UPDATE_FADER");
 // export const ONCLICK_SQUARE = Symbol("ONCLICK_SQUARE");
 export const ONMOUSEDOWN_SQUARE = Symbol("ONMOUSEDOWN_SQUARE")
 export const ONMOUSEUP_SQUARE = Symbol("ONMOUSEUP_SQUARE")
 
-// the container will need these
-export const updateMouseDown = (bool) => ({
-    type: UPDATE_MOUSEDOWN,
+/********************************************************************/
+/*Dials and Faders **************************************************/
+/********************************************************************/
+
+export const onMouseDownFaderDial = (bool) => ({
+    type: ONMOUSEDOWN_FADERDIAL,
     bool,
 });
 
-export const mouseLeave = (event, id) => ({
-    type: MOUSELEAVE,
+export const onMouseLeaveFaderDial = (event, id) => ({
+    type: ONMOUSELEAVE_FADERDIAL,
     event,
     id,
 });
@@ -30,6 +32,10 @@ export const updateFader = (event, id) => ({
     event,
     id,
 });
+
+/********************************************************************/
+/*Grid **************************************************************/
+/********************************************************************/
 
 // export const onClickSquare = (id) => ({
 //     type: ONCLICK_SQUARE,

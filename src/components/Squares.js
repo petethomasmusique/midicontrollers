@@ -10,7 +10,6 @@ export default ({sequencer, onMouseUpSquare, onMouseDownSquare}) => (
 					key={ i } 
 					id={ i } 
 					colour={ square.get('colour')} 
-					// onClick={ () => onClickSquare(i) }
 					onMouseDown={ () => onMouseDownSquare(i) }
 					onMouseUp={ () => onMouseUpSquare(i) }
 				/>

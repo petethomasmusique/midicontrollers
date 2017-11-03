@@ -5,7 +5,10 @@ Work in Progress:
 
 To do:
 
-Add example MAXMSP patch to project.
+- Add example MAXMSP patch to project.
+- Assignable faders and dials (can change port in the app)
+- Write proper documentation(!)
+
 Complete grid SysEx receive functionality:
 - handle recieve message
 - how will it handle the led's lighting up
@@ -13,11 +16,12 @@ Complete grid SysEx receive functionality:
 - optional messages to clear all data?
 
 App bits and bobs
+- Error handling/user messages (in a seperate component)
 - Choosing a MIDI device (dropdown?)
 - Error handling when no MIDI device is available
 - Title
 - Instructions
-
+- switch off cursor highlighting default
 
 The aim of this project is to build a completely neutral controller to make interacting with data fluid and flexible on a project by project basis. Credit to <a href="https://github.com/cotejp/webmidi">WebMidi.js</a> for an excellent library that simplifies use of the Web Midi API and <a href="https://monome.org/">Monome</a>, whose beautifully designed Grid I'm using as inspiration.
 
