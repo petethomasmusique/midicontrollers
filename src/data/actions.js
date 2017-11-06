@@ -4,7 +4,8 @@ export const UPDATE_DIAL = Symbol("UPDATE_DIAL");
 export const UPDATE_FADER = Symbol("UPDATE_FADER");
 export const ONMOUSEDOWN_SQUARE = Symbol("ONMOUSEDOWN_SQUARE")
 export const ONMOUSEUP_SQUARE = Symbol("ONMOUSEUP_SQUARE")
-export const ONSETSQUARE = Symbol("ONSETSQUARE");
+export const SET_SINGLESQUARE = Symbol("SET_SINGLESQUARE");
+export const SET_WHOLEGRID = Symbol("SET_WHOLEGRID");
 
 /********************************************************************/
 /*Dials and Faders **************************************************/
@@ -37,8 +38,13 @@ export const updateFader = (event, id) => ({
 /*Grid **************************************************************/
 /********************************************************************/
 
-export const onSetSquare = (data) => ({
-    type: ONSETSQUARE,
+export const setSingleSquare = (data) => ({
+    type: SET_SINGLESQUARE,
+    data,
+})
+
+export const setWholeGrid = (data) => ({
+    type: SET_WHOLEGRID,
     data,
 })
 

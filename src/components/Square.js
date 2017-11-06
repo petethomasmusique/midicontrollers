@@ -5,7 +5,6 @@ export default ({id, colour, onMouseUp, onMouseDown}) => (
 	<div 
 		id={'square-' + id}
 		className="sequencer-square" 
-		// onClick={ onClick }
 		onMouseDown={ onMouseDown } 
 		onMouseUp={ onMouseUp }
 		>

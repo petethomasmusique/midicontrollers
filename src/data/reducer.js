@@ -7,9 +7,11 @@ import { UPDATE_DIAL } from "./actions";
 import { UPDATE_FADER } from "./actions";
 import { ONMOUSEDOWN_SQUARE } from "./actions";
 import { ONMOUSEUP_SQUARE } from "./actions";
-import { ONSETSQUARE } from "./actions";
+import { SET_SINGLESQUARE } from "./actions";
+import { SET_WHOLEGRID } from "./actions";
 
-import { onSetSquare } from "./actions";
+// import { onSetSquare } from "./actions";
+import { store } from '../index';
 
 /********************************************************************/
 /*Dials and Faders **************************************************/
@@ -68,7 +70,8 @@ const updateFader = (state, { event, id}) => {
 }
 
 const sendFaderDialMidi = (channel, val) => {
-	WebMidi.getOutputByName("to Max 1") 
+	let outputDevice = store.getState().get('midiOutDevice');
+	WebMidi.getOutputByName(outputDevice) 
 		   .sendControlChange( channel, val );
 }
 
@@ -90,34 +93,42 @@ const onMouseUpSquare = (state, { id }) => {
 const sendSysEx = (id, val) => {
 	let x = id % 16;
 	let y = Math.floor(id / 16);
-	WebMidi.getOutputByName("to Max 1") // TODO: Make this variable depending on user choice
+	let outputDevice = store.getState().get('midiOutDevice');
+	WebMidi.getOutputByName(outputDevice) // TODO: Make this variable depending on user choice
 		   .sendSysex(1, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
 }
 
-// // sets the state for the squares, including colour and velocity
-// const setSquare = (state, id, colour, velocity) => {
-// 	return state.setIn(['sequencer', id, 'colour'], colour)
-// 				.setIn(['sequencer', id, 'velocity'], velocity);
-// }
-
-const setSquare = (state, {data}) => {
-	// convert to normal array
-	let dataArray = [].slice.call(data);
-	// remove top and tail SysEx msg
-	dataArray = dataArray.slice(1, 6);
-	let x = dataArray[2]; let y = dataArray[3];
-	let val = dataArray[4];
+const setSingleSquare = (state, {data}) => {
+	let x = data[2]; let y = data[3];
+	let val = data[4];
 	// convert xy to an index
 	let index = getIndex(x, y, 16);
+	let colour = getColour(val);
 	// put into state
-	console.log(index); //TODO handle this
-	return state.setIn(['sequencer', index, 'colour'], '#000')
+	return state.setIn(['sequencer', index, 'colour'], colour)
 				.setIn(['sequencer', index, 'velocity'], val);
+}
+
+const setWholeGrid = (state, {data}) => {
+	console.log('setWholeGrid');
+	return state;
 }
 
 const getIndex = (x, y, cols) => {
 	let index = (y * cols) + x;
 	return index;
+}
+
+const getColour = (val) => {
+	if (val === 0) {
+		return '#DCDCDC';
+	} else if (val <= 60) {
+		return '#A1A1A1';
+	} else if (val <= 90) {
+		return '#707070';
+	} else {
+		return '#1C1C1C';
+	}
 }
 
 export default (state = initial, action) => {
@@ -128,7 +139,8 @@ export default (state = initial, action) => {
 		case UPDATE_FADER: return updateFader(state, action);
 		case ONMOUSEDOWN_SQUARE: return onMouseDownSquare(state, action);
 		case ONMOUSEUP_SQUARE: return onMouseUpSquare(state, action);
-		case ONSETSQUARE: return setSquare(state, action);
+		case SET_SINGLESQUARE: return setSingleSquare(state, action);
+		case SET_WHOLEGRID: return setWholeGrid(state, action);
 		default: return state;
 	}
 };

@@ -4,11 +4,11 @@ import { createStore } from "redux";
 import { Provider } from "react-redux";
 import state from "./data/reducer"; 
 import App from './App';
-import { enableMidiAndListenForEvents } from './modules/events';
+import { enableMidi } from './modules/events';
 
 // create a store using our reducer
-const store = createStore(state);
-enableMidiAndListenForEvents(store); // pass this the store so that you have access to dispatch and getState;
+export const store = createStore(state);
+enableMidi(store);
 
 ReactDOM.render(
     // wrap the App component with the store Provider
