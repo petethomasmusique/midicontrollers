@@ -12,21 +12,6 @@ import { ONSETSQUARE } from "./actions";
 import { onSetSquare } from "./actions";
 
 /********************************************************************/
-/*WebMidi (TODO: MOVE) **********************************************/
-/********************************************************************/
-
-WebMidi.enable(function(err) {
-	if (!err) {
-		let input = WebMidi.getInputByName("from Max 1"); // TODO: Allow this to be changed when user chooses device
-		input.addListener('sysex', "all", function (e) {
-			receiveSysEx(e.data);
-    	});
-	} else {
-		console.log('webmidi failed');
-	}
-}, true);
-
-/********************************************************************/
 /*Dials and Faders **************************************************/
 /********************************************************************/
 
@@ -109,33 +94,6 @@ const sendSysEx = (id, val) => {
 		   .sendSysex(1, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
 }
 
-// slightly complex solution here: for the state to be available we need to use our action creator and then dispatch it back to the reducer. So the question is , where does this kind of thing live?
-
-const receiveSysEx = (data) => {
-	// remove SysEx start/end data
-	let dataArr = [].slice.call(data.slice(1, 6));
-	switch (dataArr[0]) {
-		case 0: // set single square
-			console.log(dataArr);
-			// onSetSquare(dataArr);
-			break;
-		case 1: // set whole grid
-			console.log(dataArr);
-			// setGrid();
-			break;
-		case 2: // set row
-			console.log(dataArr);
-			// setRow();
-			break;
-		case 3: // set column
-			console.log(dataArr);
-			// setColumn();
-			break;
-		default:
-			console.log("Don't understand SysEx message in!")
-	}
-}
-
 // // sets the state for the squares, including colour and velocity
 // const setSquare = (state, id, colour, velocity) => {
 // 	return state.setIn(['sequencer', id, 'colour'], colour)
@@ -143,8 +101,23 @@ const receiveSysEx = (data) => {
 // }
 
 const setSquare = (state, {data}) => {
-	console.log(data);
-	return state;
+	// convert to normal array
+	let dataArray = [].slice.call(data);
+	// remove top and tail SysEx msg
+	dataArray = dataArray.slice(1, 6);
+	let x = dataArray[2]; let y = dataArray[3];
+	let val = dataArray[4];
+	// convert xy to an index
+	let index = getIndex(x, y, 16);
+	// put into state
+	console.log(index); //TODO handle this
+	return state.setIn(['sequencer', index, 'colour'], '#000')
+				.setIn(['sequencer', index, 'velocity'], val);
+}
+
+const getIndex = (x, y, cols) => {
+	let index = (y * cols) + x;
+	return index;
 }
 
 export default (state = initial, action) => {

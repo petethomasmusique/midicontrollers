@@ -17,3 +17,4 @@ export default ({sequencer, onMouseUpSquare, onMouseDownSquare}) => (
 		</div>
 	</div>
 )
+
