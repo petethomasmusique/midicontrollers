@@ -1,5 +1,6 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
+import { Map } from "immutable";
 
 import { ONMOUSEDOWN_FADERDIAL } from "./actions";
 import { ONMOUSELEAVE_FADERDIAL } from "./actions";
@@ -10,7 +11,6 @@ import { ONMOUSEUP_SQUARE } from "./actions";
 import { SET_SINGLESQUARE } from "./actions";
 import { SET_WHOLEGRID } from "./actions";
 
-// import { onSetSquare } from "./actions";
 import { store } from '../index';
 
 /********************************************************************/
@@ -110,8 +110,9 @@ const setSingleSquare = (state, {data}) => {
 }
 
 const setWholeGrid = (state, {data}) => {
-	console.log('setWholeGrid');
-	return state;
+	let val = data[4];
+	let col = getColour(val);
+	return state.set('sequencer', state.get('sequencer').map(() => Map({velocity: val, colour: col})));
 }
 
 const getIndex = (x, y, cols) => {
