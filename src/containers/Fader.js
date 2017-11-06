@@ -1,7 +1,8 @@
 import { connect } from "react-redux";
 import Fader from "../components/Fader";
-import { updateMouseDown } from "../data/actions";
-import { mouseLeave } from "../data/actions";
+
+import { onMouseDownFaderDial } from "../data/actions";
+import { onMouseLeaveFaderDial } from "../data/actions";
 import { updateFader } from "../data/actions";
 
 const mapStateToProps = state => ({
@@ -9,8 +10,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    mouseDown: (bool) => dispatch(updateMouseDown(bool)),
-    mouseLeave: (event, id) => dispatch(mouseLeave(event, id)),
+    mouseDown: (bool) => dispatch(onMouseDownFaderDial(bool)),
+    mouseLeave: (event, id) => dispatch(onMouseLeaveFaderDial(event, id)),
     updateFader: (event, id) => dispatch(updateFader(event, id)),
 }) 
 export default connect(mapStateToProps, mapDispatchToProps)(Fader);
