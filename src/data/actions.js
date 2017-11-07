@@ -6,6 +6,8 @@ export const ONMOUSEDOWN_SQUARE = Symbol("ONMOUSEDOWN_SQUARE")
 export const ONMOUSEUP_SQUARE = Symbol("ONMOUSEUP_SQUARE")
 export const SET_SINGLESQUARE = Symbol("SET_SINGLESQUARE");
 export const SET_WHOLEGRID = Symbol("SET_WHOLEGRID");
+export const SET_ROW = Symbol("SET_ROW");
+export const SET_COLUMN = Symbol("SET_COLUMN");
 
 /********************************************************************/
 /*Dials and Faders **************************************************/
@@ -45,6 +47,16 @@ export const setSingleSquare = (data) => ({
 
 export const setWholeGrid = (data) => ({
     type: SET_WHOLEGRID,
+    data,
+})
+
+export const setRow = (data) => ({
+    type: SET_ROW,
+    data,
+})
+
+export const setColumn = (data) => ({
+    type: SET_COLUMN,
     data,
 })
 
