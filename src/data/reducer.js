@@ -1,5 +1,6 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
+import { Map } from "immutable";
 
 import { ONMOUSEDOWN_FADERDIAL } from "./actions";
 import { ONMOUSELEAVE_FADERDIAL } from "./actions";
@@ -9,8 +10,9 @@ import { ONMOUSEDOWN_SQUARE } from "./actions";
 import { ONMOUSEUP_SQUARE } from "./actions";
 import { SET_SINGLESQUARE } from "./actions";
 import { SET_WHOLEGRID } from "./actions";
+import { SET_ROW } from "./actions";
+import { SET_COLUMN } from "./actions";
 
-// import { onSetSquare } from "./actions";
 import { store } from '../index';
 
 /********************************************************************/
@@ -110,8 +112,47 @@ const setSingleSquare = (state, {data}) => {
 }
 
 const setWholeGrid = (state, {data}) => {
-	console.log('setWholeGrid');
-	return state;
+	let val = data[4];
+	let col = getColour(val);
+	return state.set('sequencer', state.get('sequencer').map(() => Map({velocity: val, colour: col})));
+}
+
+const setRow = (state, {data}) => {
+	let row = data[1];
+	if (row >= 0 && row < 7) { // check row is sensible
+		let valsArr = data.slice(2);
+		let sequencer = state.get('sequencer');
+		valsArr.map((val, i) => {
+			if (i < 16) { // only accept 16 values, ignore the rest
+				let index = getIndex(i, row, 16);
+				let colour = getColour(val);
+				sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+			}
+		})
+		return state.set('sequencer', sequencer);	
+	} else {
+		console.log("no such row exists.")
+		return state;
+	}
+}
+
+const setColumn = (state, {data}) => {
+	let column = data[1];
+	if (column >= 0 && column < 16) { // check column is sensible
+		let valsArr = data.slice(2);
+		let sequencer = state.get('sequencer');
+		valsArr.map((val, i) => {
+			if (i < 8) { // only accept 8 values, ignore the rest
+				let index = getIndex(column, i, 16);
+				let colour = getColour(val);
+				sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+			}
+		})
+		return state.set('sequencer', sequencer);	
+	} else {
+		console.log("no such column exists.")
+		return state;
+	}
 }
 
 const getIndex = (x, y, cols) => {
@@ -141,6 +182,8 @@ export default (state = initial, action) => {
 		case ONMOUSEUP_SQUARE: return onMouseUpSquare(state, action);
 		case SET_SINGLESQUARE: return setSingleSquare(state, action);
 		case SET_WHOLEGRID: return setWholeGrid(state, action);
+		case SET_ROW: return setRow(state, action);
+		case SET_COLUMN: return setColumn(state, action);
 		default: return state;
 	}
 };

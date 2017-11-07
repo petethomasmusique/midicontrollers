@@ -1,6 +1,8 @@
 import WebMidi from 'webmidi';
 import {setSingleSquare} from '../data/actions';
 import {setWholeGrid} from '../data/actions';
+import {setRow} from '../data/actions';
+import {setColumn} from '../data/actions';
 
 export const enableMidi = (store) => {
 	return WebMidi.enable(function(err) {
@@ -18,29 +20,26 @@ export const enableMidi = (store) => {
 }
 
 const receiveSysEx = (data, store) => {
+	// convert to array
+	let dataArr = [].slice.call(data);
 	// remove SysEx start/end data
-	let dataArr = [].slice.call(data.slice(1, 6));
-	console.log(dataArr);
+	dataArr.pop();
+	dataArr.shift();
+	// first value determines action
 	switch (dataArr[0]) {
 		case 0: // set single square
-			console.log(dataArr);
 			store.dispatch(setSingleSquare(dataArr));
 			break;
-		case 1: // set whole grid
-			console.log(dataArr);
+		case 1: // set whole grid	
 			store.dispatch(setWholeGrid(dataArr));
 			break;
 		case 2: // set row
-			console.log(dataArr);
-			// setRow();
+			store.dispatch(setRow(dataArr));
 			break;
 		case 3: // set column
-			console.log(dataArr);
-			// setColumn();
+			store.dispatch(setColumn(dataArr));
 			break;
 		default:
 			console.log("Don't understand SysEx message in!")
 	}
 }
-
-
