@@ -2,6 +2,15 @@ body {
   font-family: 'Comfortaa', cursive;
   background: #fdf9f3; }
 
+.controls {
+  float: left;
+  display: inline-block; }
+
+.knobs-container {
+  min-width: 415px;
+  max-width: 440px;
+  float: left; }
+
 .knob-container {
   margin: 5px;
   display: inline-block;
@@ -53,25 +62,30 @@ body {
       display: inline-block;
       text-align: right; }
 
+.faders-container {
+  display: inline-block;
+  float: left;
+  width: 660px; }
+
 .fader-container {
   margin: 5px;
   display: inline-block;
   background-image: linear-gradient(to bottom, #A9A9A9, #baabab);
   border-radius: 4px; }
   .fader-container .fader-background {
-    width: 63.33333px;
-    height: 200px; }
+    width: 63.3333333333px;
+    height: 219px; }
     .fader-container .fader-background .fader-inset {
-      width: 50.66667px;
-      height: 180px;
+      width: 50.6666666667px;
+      height: 197.1px;
       background-color: #d1c7c7;
       position: relative;
-      left: 6.33333px;
-      top: 10px;
+      left: 6.3333333333px;
+      top: 10.95px;
       border-radius: 4px; }
       .fader-container .fader-background .fader-inset .fader-position {
-        height: 10px;
-        width: 50.66667px;
+        height: 10.95px;
+        width: 50.6666666667px;
         display: block;
         z-index: 2;
         position: relative;
@@ -82,16 +96,16 @@ body {
     color: #FFF;
     border-radius: 0 0 4px 4px;
     background-color: #d1c7c7;
-    padding-top: 0.63333px;
+    padding-top: 0.6333333333px;
     font-size: 17px; }
     .fader-container .fader-info .midi-channel {
-      padding-left: 6.33333px;
-      width: 25.33333px;
+      padding-left: 6.3333333333px;
+      width: 25.3333333333px;
       display: inline-block;
       font-size: 10.2px; }
     .fader-container .fader-info .midi-value {
-      padding-right: 6.33333px;
-      width: 25.33333px;
+      padding-right: 6.3333333333px;
+      width: 25.3333333333px;
       display: inline-block;
       text-align: right;
       font-size: 10.2px; }
@@ -107,7 +121,8 @@ body {
   margin: 5px;
   border-radius: 1px;
   display: inline-block;
-  background-color: #baabab; }
+  background-color: #baabab;
+  float: left; }
 
 .sequencer-square {
   width: 37.96875px;
@@ -121,9 +136,12 @@ body {
     width: 30.375px;
     height: 30.375px;
     position: relative;
-    top: 3.79688px;
-    left: 3.79688px;
+    top: 3.796875px;
+    left: 3.796875px;
     border-radius: 5%;
     margin: 0px; }
+
+.devices-container {
+  display: inline-block; }
 
 /*# sourceMappingURL=output.css.map */

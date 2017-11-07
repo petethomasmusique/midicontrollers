@@ -22,6 +22,16 @@ body {
 	font-family: 'Comfortaa', cursive;
 	background: #fdf9f3;
 }
+
+//#####################################################
+//  APP
+//#####################################################
+
+.controls {
+	float: left;
+	display: inline-block;
+}
+
 //#####################################################
 //  Module Imports
 //#####################################################
@@ -34,3 +44,6 @@ body {
 
 // step sequencer
 @import 'modules/step-sequencer';
+
+// info such as device list etc.
+@import 'modules/info';
