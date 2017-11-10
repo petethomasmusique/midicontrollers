@@ -8,6 +8,24 @@ export const SET_SINGLESQUARE = Symbol("SET_SINGLESQUARE");
 export const SET_WHOLEGRID = Symbol("SET_WHOLEGRID");
 export const SET_ROW = Symbol("SET_ROW");
 export const SET_COLUMN = Symbol("SET_COLUMN");
+export const AVAILABLEMIDI = Symbol("AVAILABLEMIDI");
+export const UPDATE_MIDIDEVICE = Symbol("UPDATE_MIDIDEVICE");
+
+/********************************************************************/
+/*MIDI **************************************************************/
+/********************************************************************/
+
+export const availableMidi = (inputs, outputs) => ({
+    type: AVAILABLEMIDI,
+    inputs,
+    outputs,
+})
+
+export const updateMidiDevice = (inOut, device) => ({
+    type: UPDATE_MIDIDEVICE,
+    inOut,
+    device,
+})
 
 /********************************************************************/
 /*Dials and Faders **************************************************/

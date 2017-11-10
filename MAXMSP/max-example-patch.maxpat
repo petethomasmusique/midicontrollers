@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 675.0, 45.0, 710.0, 480.0 ],
+		"rect" : [ 798.0, 45.0, 710.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -28,6 +28,31 @@
 		"digest" : "",
 		"tags" : "",
 		"boxes" : [ 			{
+				"box" : 				{
+					"id" : "obj-10",
+					"maxclass" : "button",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "bang" ],
+					"patching_rect" : [ 82.0, 265.0, 20.0, 20.0 ]
+				}
+
+			}
+, 			{
+				"box" : 				{
+					"fontname" : "Arial",
+					"fontsize" : 12.0,
+					"id" : "obj-3",
+					"maxclass" : "newobj",
+					"numinlets" : 1,
+					"numoutlets" : 1,
+					"outlettype" : [ "int" ],
+					"patching_rect" : [ 85.0, 334.0, 133.0, 20.0 ],
+					"text" : "sxformat 240 1 0 0 247"
+				}
+
+			}
+, 			{
 				"box" : 				{
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
@@ -95,7 +120,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 336.709991, 175.889984, 466.690002, 208.0 ],
+					"patching_rect" : [ 336.709991, 175.889984, 466.690002, 194.0 ],
 					"text" : "Messages to the grid take the format [a, b, x, y, z], where:\n\na - command (see below)\ng - grid number (default 0 but allows for multiple grids in future)\nx - co-ordinate\ny - co-ordinate\nz - value (0-127)\n\nCommands:\n\n[0, g, x, y, z] set single square\n[1, g, z] set grid ( z is the value)\n[2, g, y, z...] set row (y is the row, z... are the values)\n[3, g, x, z....] set column (x is the column, z are the values)\n"
 				}
 
@@ -178,8 +203,8 @@
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 6.0, 417.859985, 600.0, 33.0 ],
-					"text" : "sxformat 240 2 10 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 247"
+					"patching_rect" : [ 6.0, 417.859985, 590.0, 33.0 ],
+					"text" : "sxformat 240 3 4 127 127 127 0 127 127 30 127 127 127 60 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 247"
 				}
 
 			}
@@ -652,6 +677,15 @@
 			}
 , 			{
 				"patchline" : 				{
+					"destination" : [ "obj-3", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-10", 0 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
 					"destination" : [ "obj-15", 0 ],
 					"disabled" : 0,
 					"hidden" : 0,
@@ -719,6 +753,15 @@
 					"disabled" : 0,
 					"hidden" : 0,
 					"source" : [ "obj-20", 3 ]
+				}
+
+			}
+, 			{
+				"patchline" : 				{
+					"destination" : [ "obj-5", 0 ],
+					"disabled" : 0,
+					"hidden" : 0,
+					"source" : [ "obj-3", 0 ]
 				}
 
 			}
