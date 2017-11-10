@@ -139,7 +139,7 @@ const setSingleSquare = (state, {data}) => {
 }
 
 const setWholeGrid = (state, {data}) => {
-	let val = data[4];
+	let val = data[2];
 	let col = getColour(val);
 	return state.set('sequencer', state.get('sequencer').map(() => Map({velocity: val, colour: col})));
 }

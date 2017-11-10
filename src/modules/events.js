@@ -32,7 +32,6 @@ export const addListeners = (device) => {
 }
 
 const receiveSysEx = (data, store) => {
-	console.log(data);
 	// convert to array
 	let dataArr = [].slice.call(data);
 	// remove SysEx start/end data
