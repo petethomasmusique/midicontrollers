@@ -2,8 +2,8 @@ $knobSize: $componentScale;
 $faceSize: $knobSize * 0.9;
 
 .knobs-container {
-  min-width: (4 * $componentScale) + (3 * $spacing);
-  max-width: (4 * $componentScale) + (3 * $spacing) + 25px;
+  min-width: (5 * $componentScale) + (10 * $spacing);
+  max-width: (5 * $componentScale) + (10 * $spacing);
   float: left;
 }
 
