@@ -4,6 +4,7 @@ import {setWholeGrid} from '../data/actions';
 import {setRow} from '../data/actions';
 import {setColumn} from '../data/actions';
 import {availableMidi} from '../data/actions';
+import {updateErrors} from '../data/actions';
 
 import { store } from '../index';
 
@@ -15,7 +16,7 @@ export const enableMidi = (store) => {
 		  		let outputs = WebMidi.outputs;
 		  		store.dispatch(availableMidi(inputs, outputs));
 			} else {
-				console.log('webmidi failed');
+				store.dispatch(updateErrors("Midi failed to enable"));
 			}
 		}, true);		
 }
@@ -23,7 +24,6 @@ export const enableMidi = (store) => {
 export const addListeners = (device) => {
 	// remove all old listeners
 	WebMidi.removeListener();
-	console.log(device);
 	let input = WebMidi.getInputByName(device); 
 	// TODO: Should I remove any listeners?
 	input.addListener('sysex', "all", function (e) {
@@ -52,6 +52,6 @@ const receiveSysEx = (data, store) => {
 			store.dispatch(setColumn(dataArr));
 			break;
 		default:
-			console.log("Don't understand SysEx message in!")
+			store.dispatch(updateErrors("Don't understand incoming message! Please read the docs."));
 	}
 }

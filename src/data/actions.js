@@ -10,6 +10,12 @@ export const SET_ROW = Symbol("SET_ROW");
 export const SET_COLUMN = Symbol("SET_COLUMN");
 export const AVAILABLEMIDI = Symbol("AVAILABLEMIDI");
 export const UPDATE_MIDIDEVICE = Symbol("UPDATE_MIDIDEVICE");
+export const UPDATE_ERRORS = Symbol("UPDATE_ERRORS");
+
+export const updateErrors = (messageString) => ({
+    type: UPDATE_ERRORS,
+    messageString,
+})
 
 /********************************************************************/
 /*MIDI **************************************************************/
