@@ -1,6 +1,6 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
-import { Map } from "immutable";
+import { Map, List } from "immutable";
 
 import { ONMOUSEDOWN_FADERDIAL } from "./actions";
 import { ONMOUSELEAVE_FADERDIAL } from "./actions";
@@ -12,8 +12,35 @@ import { SET_SINGLESQUARE } from "./actions";
 import { SET_WHOLEGRID } from "./actions";
 import { SET_ROW } from "./actions";
 import { SET_COLUMN } from "./actions";
+import { AVAILABLEMIDI } from "./actions";
+import { UPDATE_MIDIDEVICE } from "./actions";
 
 import { store } from '../index';
+import { addListeners } from '../modules/events';
+
+/********************************************************************/
+/*MIDI **************************************************************/
+/********************************************************************/
+
+const setAvailableMidi = (state, { inputs, outputs}) => {
+	let availableMidiInputs = inputs.map(input => input._midiInput.name);
+	let availableMidiOutputs = outputs.map(output => output._midiOutput.name);
+	return state.set('availableMidiInputs', List(availableMidiInputs))
+				.set('availableMidiOutputs', List(availableMidiOutputs));
+}
+
+const updateMidiDevice = (state, { inOut, device}) => {
+	if (inOut === 'input') {
+		// on input device selected, setup event listeners
+		addListeners(device);
+		return state.set('midiInDevice', device);
+	} else if (inOut === 'output') {
+		return state.set('midiOutDevice', device);
+	} else {
+		console.log('error: 1st argument requires either input/output');
+		return state;
+	}
+}
 
 /********************************************************************/
 /*Dials and Faders **************************************************/
@@ -112,7 +139,7 @@ const setSingleSquare = (state, {data}) => {
 }
 
 const setWholeGrid = (state, {data}) => {
-	let val = data[4];
+	let val = data[2];
 	let col = getColour(val);
 	return state.set('sequencer', state.get('sequencer').map(() => Map({velocity: val, colour: col})));
 }
@@ -184,6 +211,8 @@ export default (state = initial, action) => {
 		case SET_WHOLEGRID: return setWholeGrid(state, action);
 		case SET_ROW: return setRow(state, action);
 		case SET_COLUMN: return setColumn(state, action);
+		case AVAILABLEMIDI: return setAvailableMidi(state, action);
+		case UPDATE_MIDIDEVICE: return updateMidiDevice(state, action);
 		default: return state;
 	}
 };

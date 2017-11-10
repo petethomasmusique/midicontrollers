@@ -9,6 +9,7 @@ $squareSize: ($containerSize - (17 * ($spacing/2))) / 16;
 	border-radius: 1px;
 	display: inline-block;
 	background-color: #baabab;
+	float: left;
 }
 
 .sequencer-square {

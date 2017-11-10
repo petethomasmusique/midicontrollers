@@ -1,5 +1,12 @@
 $width: ($componentScale*2)/3 - ($spacing*2)/3;
-$height: 2*$componentScale;
+$height: 2.19*$componentScale ;
+
+.faders-container {
+	display: inline-block;
+	float: left;
+	// width: (10 * $width) + (7 * $spacing); 
+	width: ($width*9) + (18*$spacing);
+}
 
 .fader-container {
 	margin: $spacing;
