@@ -1,4 +1,4 @@
-import { Map, Range, List } from "immutable";
+import { Map, Range } from "immutable";
 
 export default Map({
 	midiInDevice: 'from Max 1',

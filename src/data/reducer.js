@@ -16,6 +16,7 @@ import { AVAILABLEMIDI } from "./actions";
 import { UPDATE_MIDIDEVICE } from "./actions";
 
 import { store } from '../index';
+import { addListeners } from '../modules/events';
 
 /********************************************************************/
 /*MIDI **************************************************************/
@@ -29,9 +30,11 @@ const setAvailableMidi = (state, { inputs, outputs}) => {
 }
 
 const updateMidiDevice = (state, { inOut, device}) => {
-	if (inOut == 'input') {
+	if (inOut === 'input') {
+		// on input device selected, setup event listeners
+		addListeners(device);
 		return state.set('midiInDevice', device);
-	} else if (inOut == 'output') {
+	} else if (inOut === 'output') {
 		return state.set('midiOutDevice', device);
 	} else {
 		console.log('error: 1st argument requires either input/output');

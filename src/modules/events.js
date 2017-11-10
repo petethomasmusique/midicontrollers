@@ -5,15 +5,12 @@ import {setRow} from '../data/actions';
 import {setColumn} from '../data/actions';
 import {availableMidi} from '../data/actions';
 
+import { store } from '../index';
+
 export const enableMidi = (store) => {
 	return WebMidi.enable(function(err) {
 			if (!err) {
-				// let inputDevice = store.getState().get('midiInDevice');
-				// let input = WebMidi.getInputByName(inputDevice); // TODO: Allow this to be changed when user chooses device
-				// input.addListener('sysex', "all", function (e) {
-				// 	receiveSysEx(e.data, store);
-		  //   	});
-		  		// on successful enable, send a list of available outputs to the state
+		  		// on successful enable, send a list of available devices to the state
 		  		let inputs = WebMidi.inputs;
 		  		let outputs = WebMidi.outputs;
 		  		store.dispatch(availableMidi(inputs, outputs));
@@ -23,7 +20,19 @@ export const enableMidi = (store) => {
 		}, true);		
 }
 
+export const addListeners = (device) => {
+	// remove all old listeners
+	WebMidi.removeListener();
+	console.log(device);
+	let input = WebMidi.getInputByName(device); 
+	// TODO: Should I remove any listeners?
+	input.addListener('sysex', "all", function (e) {
+		receiveSysEx(e.data, store);
+	});
+}
+
 const receiveSysEx = (data, store) => {
+	console.log(data);
 	// convert to array
 	let dataArr = [].slice.call(data);
 	// remove SysEx start/end data
