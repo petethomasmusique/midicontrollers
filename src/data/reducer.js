@@ -1,6 +1,8 @@
 import initial from "./initial";
 import WebMidi from 'webmidi';
 import { Map, List } from "immutable";
+import { store } from '../index';
+import { addListeners } from '../modules/events';
 
 import { ONMOUSEDOWN_FADERDIAL } from "./actions";
 import { ONMOUSELEAVE_FADERDIAL } from "./actions";
@@ -14,9 +16,15 @@ import { SET_ROW } from "./actions";
 import { SET_COLUMN } from "./actions";
 import { AVAILABLEMIDI } from "./actions";
 import { UPDATE_MIDIDEVICE } from "./actions";
+import { UPDATE_ERRORS } from "./actions";
 
-import { store } from '../index';
-import { addListeners } from '../modules/events';
+/********************************************************************/
+/*App ***************************************************************/
+/********************************************************************/
+
+const updateErrorsInState = (state, { messageString }) => {
+	return state.set('errors', messageString);
+}
 
 /********************************************************************/
 /*MIDI **************************************************************/
@@ -33,11 +41,12 @@ const updateMidiDevice = (state, { inOut, device}) => {
 	if (inOut === 'input') {
 		// on input device selected, setup event listeners
 		addListeners(device);
-		return state.set('midiInDevice', device);
+		return state.set('midiInDevice', device)
+					.set('errors', '');
 	} else if (inOut === 'output') {
-		return state.set('midiOutDevice', device);
+		return state.set('midiOutDevice', device)
+					.set('errors', '');
 	} else {
-		console.log('error: 1st argument requires either input/output');
 		return state;
 	}
 }
@@ -62,16 +71,25 @@ const updateDial = (state, { event, id }) => {
 		let knobInfo = knob.getBoundingClientRect();
   		let newValue = Math.floor(127 - (event.clientY - knobInfo.y) * (127/knobInfo.height));
   		let channel = state.getIn(['knobs', id, 'channel']);
-	    if (newValue < 3) {
-	    	sendFaderDialMidi(channel, 0);
-	    	return state.setIn(['knobs', id, 'value'], 0);
-	    } else if (newValue > 124) {
-	    	sendFaderDialMidi(channel, 127);
-	    	return state.setIn(['knobs', id, 'value'], 127);
-	    } else {
-	    	sendFaderDialMidi(channel, newValue);
-	    	return state.setIn(['knobs', id, 'value'], newValue);
-	    }
+
+  		let outputDevice = state.get('midiOutDevice');
+		if (outputDevice !== '') {			
+		    if (newValue < 3) {
+		    	sendFaderDialMidi(channel, 0);
+		    	return state.setIn(['knobs', id, 'value'], 0)
+		    				.set('errors', '');
+		    } else if (newValue > 124) {
+		    	sendFaderDialMidi(channel, 127);
+		    	return state.setIn(['knobs', id, 'value'], 127)
+		    				.set('errors', '');
+		    } else {
+		    	sendFaderDialMidi(channel, newValue);
+		    	return state.setIn(['knobs', id, 'value'], newValue)
+		    				.set('errors', '');
+		    }
+		} else {
+			return state.set('errors', 'No midi output selected.' );
+		}
 	}
 	return state;
 };
@@ -84,16 +102,25 @@ const updateFader = (state, { event, id}) => {
 		let faderPosition = (event.clientY - faderInfo.y);
 		let midiValue = 127 - Math.floor(faderPosition * (127/faderHeight));
 		let channel = state.getIn(['faders', id, 'channel']);
-		if (midiValue < 0) {
-			sendFaderDialMidi(channel, 0);
-			return state.setIn(['faders', id, 'value'], faderHeight).setIn(['faders', id, 'midiValue'], 0);
-	    } else if (midiValue > 127) {
-	    	sendFaderDialMidi(channel, 127);
-			return state.setIn(['faders', id, 'value'], 0).setIn(['faders', id, 'midiValue'], 127);
-	    } else {
-	    	sendFaderDialMidi(channel, midiValue);
-			return state.setIn(['faders', id, 'value'], faderPosition).setIn(['faders', id, 'midiValue'], midiValue);
-	    }
+		
+  		let outputDevice = state.get('midiOutDevice');
+		if (outputDevice !== '') {	
+			if (midiValue < 0) {
+				sendFaderDialMidi(channel, 0);
+				return state.setIn(['faders', id, 'value'], faderHeight).setIn(['faders', id, 'midiValue'], 0)
+							.set('errors', '');
+		    } else if (midiValue > 127) {
+		    	sendFaderDialMidi(channel, 127);
+				return state.setIn(['faders', id, 'value'], 0).setIn(['faders', id, 'midiValue'], 127)
+							.set('errors', '');
+		    } else {
+		    	sendFaderDialMidi(channel, midiValue);
+				return state.setIn(['faders', id, 'value'], faderPosition).setIn(['faders', id, 'midiValue'], midiValue)
+							.set('errors', '');
+		    }
+		} else {
+			return state.set('errors', 'No midi output selected.' );
+		}
 	}
 	return state;
 }
@@ -108,13 +135,23 @@ const sendFaderDialMidi = (channel, val) => {
 /*Grid **************************************************************/
 /********************************************************************/
 
+// TODO: refactor mouse up and down as they are duplicates
+
 const onMouseDownSquare = (state, { id }) => {
-	sendSysEx(id, 1);
+	let outputDevice = state.get('midiOutDevice');
+	if (outputDevice !== '') {
+		sendSysEx(id, 1);
+	} else {
+		return state.set('errors', 'No midi output selected.' );
+	}
 	return state;
 }
 
 const onMouseUpSquare = (state, { id }) => {
-	sendSysEx(id, 0);
+	let outputDevice = state.get('midiOutDevice');
+	if (outputDevice !== '') {
+		sendSysEx(id, 0);
+	}
 	return state;
 }
 
@@ -122,8 +159,9 @@ const onMouseUpSquare = (state, { id }) => {
 const sendSysEx = (id, val) => {
 	let x = id % 16;
 	let y = Math.floor(id / 16);
-	let outputDevice = store.getState().get('midiOutDevice');
-	WebMidi.getOutputByName(outputDevice) // TODO: Make this variable depending on user choice
+	let state = store.getState();
+	let outputDevice = state.get('midiOutDevice');
+	WebMidi.getOutputByName(outputDevice)
 		   .sendSysex(1, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
 }
 
@@ -145,7 +183,7 @@ const setWholeGrid = (state, {data}) => {
 }
 
 const setRow = (state, {data}) => {
-	let row = data[1];
+	let row = data[2];
 	if (row >= 0 && row < 7) { // check row is sensible
 		let valsArr = data.slice(2);
 		let sequencer = state.get('sequencer');
@@ -158,13 +196,12 @@ const setRow = (state, {data}) => {
 		})
 		return state.set('sequencer', sequencer);	
 	} else {
-		console.log("no such row exists.")
-		return state;
+		return state.set('errors', 'Error in Sysex message: no such row exists' );
 	}
 }
 
 const setColumn = (state, {data}) => {
-	let column = data[1];
+	let column = data[2];
 	if (column >= 0 && column < 16) { // check column is sensible
 		let valsArr = data.slice(2);
 		let sequencer = state.get('sequencer');
@@ -177,8 +214,7 @@ const setColumn = (state, {data}) => {
 		})
 		return state.set('sequencer', sequencer);	
 	} else {
-		console.log("no such column exists.")
-		return state;
+		return state.set('errors', 'Error in Sysex message: no such column exists' );
 	}
 }
 
@@ -213,6 +249,7 @@ export default (state = initial, action) => {
 		case SET_COLUMN: return setColumn(state, action);
 		case AVAILABLEMIDI: return setAvailableMidi(state, action);
 		case UPDATE_MIDIDEVICE: return updateMidiDevice(state, action);
+		case UPDATE_ERRORS: return updateErrorsInState(state, action);
 		default: return state;
 	}
 };

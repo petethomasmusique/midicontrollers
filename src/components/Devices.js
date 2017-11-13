@@ -9,6 +9,7 @@ export default ({availableMidiInputs, availableMidiOutputs, updateMidiDevice}) =
 					<option key={ i }>{input}</option>
 				)) : null}
 			</select>
+			<p>Midi In</p>
 		</div>
 		
 		<div className="midiOutputs">
@@ -18,6 +19,7 @@ export default ({availableMidiInputs, availableMidiOutputs, updateMidiDevice}) =
 					<option key={ i }>{output}</option>
 				)) : null}
 			</select>
+			<p>Midi Out</p>
 		</div>
 	</div>
 )

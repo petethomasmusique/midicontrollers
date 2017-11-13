@@ -2,6 +2,15 @@ body {
   font-family: 'Comfortaa', cursive;
   background: #fdf9f3; }
 
+.app-container {
+  width: 100%;
+  display: flex;
+  justify-content: center; }
+
+.app {
+  min-width: 1210px;
+  max-width: 1210px; }
+
 .controls {
   float: left;
   display: inline-block; }
@@ -142,6 +151,47 @@ body {
     margin: 0px; }
 
 .devices-container {
-  display: inline-block; }
+  display: inline-block;
+  min-width: 550px;
+  max-width: 550px;
+  margin-top: 16px; }
+  .devices-container p {
+    display: inline-block;
+    width: 100px;
+    margin: 5px; }
+  .devices-container select {
+    width: 200px;
+    margin: 5px 10px 5px 120px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none; }
+
+.info-container {
+  display: inline-block;
+  max-width: 550px;
+  margin-top: 5px; }
+  .info-container h1 {
+    padding: 5px 10px 5px 120px;
+    margin: 0px; }
+  .info-container p {
+    padding: 5px 10px 5px 120px;
+    margin: 0px;
+    font-size: 14px;
+    line-height: 18px; }
+  .info-container .info-subtitle {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px; }
+
+.error-container {
+  width: 100%;
+  background-color: #FFF;
+  margin: auto;
+  position: absolute;
+  z-index: 3;
+  opacity: 0.8;
+  text-align: center; }
+  .error-container .error-message {
+    opacity: 1; }
 
 /*# sourceMappingURL=output.css.map */

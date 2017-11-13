@@ -1,3 +1,53 @@
 .devices-container {
 	display: inline-block;
+	min-width: 550px;
+	max-width: 550px;
+	margin-top: 16px;
+	p {
+		display: inline-block;
+		width: $componentScale;
+		margin: $spacing; 
+	}
+	select {
+		width: 2 * $componentScale;
+		margin: $spacing 2*$spacing $spacing ($componentScale + 4*$spacing); 	
+		-webkit-appearance: none;
+   		-moz-appearance: none;
+   		appearance: none;
+	}
 }
+
+.info-container {
+	display: inline-block;
+	max-width: 550px;
+	margin-top: 5px;
+	h1 {
+		padding: $spacing 2*$spacing $spacing ($componentScale + 4*$spacing);
+		margin: 0px;
+	}
+	p {
+		padding: $spacing 2*$spacing $spacing ($componentScale + 4*$spacing);
+		margin: 0px;
+		font-size: 14px;
+		line-height: 18px;
+	}
+	.info-subtitle {
+		margin-top: 10px;
+		margin-bottom: 10px;
+		font-size: 20px;
+	}
+}
+
+.error-container {
+	width: 100%;
+	background-color: #FFF;
+	margin: auto;
+	position: absolute;
+	z-index: 3;
+  	opacity: 0.8;
+  	text-align: center;
+  	.error-message {
+  		opacity: 1;
+  	}
+}
+
