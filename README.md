@@ -1,11 +1,14 @@
-# MIDI controller
+# MIDI-Gooey
 ### A project made with React, Redux, WebMidi.js and (optionally) MAXMSP to handle the sound. 
 The aim of this project is to build a completely neutral controller to make interacting with data fluid and flexible on a project by project basis. Credit to <a href="https://github.com/cotejp/webmidi">WebMidi.js</a> for an excellent library that simplifies use of the Web Midi API and <a href="https://monome.org/">Monome</a>, whose beautifully designed Grid I'm using as inspiration.
 
 ### Local Install
 - To install app locally, you need Create-React-App. In the command line run:
 `npm install -g create-react-app`
-- Once installed, download app from this repo and, in the home directory, run:
+- 
+- Once installed, download app from this repo and, in the home directory, and ensure you have the correct dependencies:
+`npm install`
+- All should be well and you can start up MIDI-Gooey
 `npm start`
 - Develop to your heart's content. To bundle the results for use in production mode run:
 `npm build`
