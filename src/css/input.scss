@@ -26,6 +26,18 @@ body {
 //#####################################################
 //  APP
 //#####################################################
+$appwidth:(6 * $componentScale) + (10 * $spacing) + (5 * $componentScale) + (10 * $spacing) + 10;
+
+.app-container {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+
+.app {
+	min-width: $appwidth;
+	max-width: $appwidth;
+}
 
 .controls {
 	float: left;
