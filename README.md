@@ -1,39 +1,32 @@
 # MIDI controller
 ### A project made with React, Redux, WebMidi.js and (optionally) MAXMSP to handle the sound. 
-
-Work in Progress:
-
-To do:
-
-- Add example MAXMSP patch to project.
-- Assignable faders and dials (can change port in the app)
-- Write proper documentation(!)
-
-Complete grid SysEx receive functionality:
-- handle recieve message
-- how will it handle the led's lighting up
-- how will it handle the clock?
-- optional messages to clear all data?
-
-App bits and bobs
-- Error handling/user messages (in a seperate component)
-- Choosing a MIDI device (dropdown?)
-- Error handling when no MIDI device is available
-- Title
-- Instructions
-- switch off cursor highlighting default
-- lots of duplicate code in fader/dial to tidy up
-
 The aim of this project is to build a completely neutral controller to make interacting with data fluid and flexible on a project by project basis. Credit to <a href="https://github.com/cotejp/webmidi">WebMidi.js</a> for an excellent library that simplifies use of the Web Midi API and <a href="https://monome.org/">Monome</a>, whose beautifully designed Grid I'm using as inspiration.
 
-### Dial and Fader
+### Local Install
+- To install app locally, you need Create-React-App. In the command line run:
+`npm install -g create-react-app`
+- Once installed, download app from this repo and, in the home directory, run:
+`npm start`
+- Develop to your heart's content. To bundle the results for use in production mode run:
+`npm build`
 
-Output values of 0-127 through sending control messages.
+### Using the app
+- Choose midi in and midi out devices from dropdown menu. If dropdowns are empty you have no available midi devices. 
+- Dials and Faders send values 0-127 as midi control messages
+- Grid makes use of sysex messages to send x, y, z - where x,y are co-ordinates and z is mousedown (1) and mouseup (0).
+- Sysex messages are received and processed in a slightly more complex way...
 
-### Grid
+- [0, g, x, y, z] set single square
+- [1, g, z] set grid ( z is the value)
+- [2, g, y, z...] set row (y is the row, z... are the values)
+- [3, g, x, z....] set column (x is the column, z are the values)
 
-Based on Monome Grid and is intended as a blank canvas with complete seperation of concerns, functionality handled by whatever programme you're using to handle the sound. 
+- Sounds hellish? The MAXMSP patch handles this for you.
 
-Outputs x,y,z: where x,y are co-ordinates (from 0,0 to 15,7) and y is 1 for mouse down and 0 for mouse up.
-Uses Midi SysEx messages to send and receive values.
+### Work in Progress - TODOs:
 
+- Work on the MAXMSP patch
+- Assignable faders and dials (can change port in the app)
+
+App bits and bobs
+- lots of duplicate code in fader/dial to tidy up
