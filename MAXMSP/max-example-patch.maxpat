@@ -8,7 +8,7 @@
 			"architecture" : "x86"
 		}
 ,
-		"rect" : [ 816.0, 47.0, 710.0, 480.0 ],
+		"rect" : [ 241.0, 274.0, 1280.0, 480.0 ],
 		"bglocked" : 0,
 		"openinpresentation" : 0,
 		"default_fontsize" : 12.0,
@@ -120,7 +120,7 @@
 					"maxclass" : "comment",
 					"numinlets" : 1,
 					"numoutlets" : 0,
-					"patching_rect" : [ 336.709991, 175.889984, 466.690002, 194.0 ],
+					"patching_rect" : [ 337.709991, 178.0, 466.690002, 194.0 ],
 					"text" : "Messages to the grid take the format [a, b, x, y, z], where:\n\na - command (see below)\ng - grid number (default 0 but allows for multiple grids in future)\nx - co-ordinate\ny - co-ordinate\nz - value (0-127)\n\nCommands:\n\n[0, g, x, y, z] set single square\n[1, g, z] set grid ( z is the value)\n[2, g, y, z...] set row (y is the row, z... are the values)\n[3, g, x, z....] set column (x is the column, z are the values)\n"
 				}
 
@@ -198,13 +198,12 @@
 					"fontname" : "Arial",
 					"fontsize" : 12.0,
 					"id" : "obj-2",
-					"linecount" : 2,
 					"maxclass" : "newobj",
 					"numinlets" : 1,
 					"numoutlets" : 1,
 					"outlettype" : [ "int" ],
-					"patching_rect" : [ 6.0, 418.859985, 584.0, 33.0 ],
-					"text" : "sxformat 240 3 0 10 127 127 0 127 127 30 127 127 127 60 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 127 247"
+					"patching_rect" : [ 6.0, 415.859985, 584.0, 20.0 ],
+					"text" : "sxformat 240 2 0 3 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 60 247"
 				}
 
 			}
