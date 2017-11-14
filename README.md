@@ -21,10 +21,19 @@ The aim of this project is to build a completely neutral controller to make inte
 
 - [0, g, x, y, z] set single square
 - [1, g, z] set grid ( z is the value)
-- [2, g, y, z...] set row (y is the row, z... are the values)
+- [2, g, y, z...] set row (y is the row, z... are the values. If only one z value, sets whole row)
 - [3, g, x, z....] set column (x is the column, z are the values)
 
 - Sounds hellish? The MAXMSP patch handles this for you.
+
+### MAXMSP
+Messages to grid:
+- setSquare x y value
+- setGrid value
+- setRow y value (sets whole row) or y values...
+- setColumn x value (sets whole column) or x values...
+
+
 
 ### Work in Progress - TODOs:
 

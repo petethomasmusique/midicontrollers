@@ -162,7 +162,7 @@ const sendSysEx = (id, val) => {
 	let state = store.getState();
 	let outputDevice = state.get('midiOutDevice');
 	WebMidi.getOutputByName(outputDevice)
-		   .sendSysex(1, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
+		   .sendSysex(0, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
 }
 
 const setSingleSquare = (state, {data}) => {
@@ -184,16 +184,24 @@ const setWholeGrid = (state, {data}) => {
 
 const setRow = (state, {data}) => {
 	let row = data[2];
-	if (row >= 0 && row < 7) { // check row is sensible
-		let valsArr = data.slice(2);
+	if (row >= 0 && row < 8) { // check row is sensible
+		let valsArr = data.slice(3);
 		let sequencer = state.get('sequencer');
-		valsArr.map((val, i) => {
-			if (i < 16) { // only accept 16 values, ignore the rest
+		if (valsArr.length === 1) {
+			for (let i = 0; i < 16; i++) {
 				let index = getIndex(i, row, 16);
-				let colour = getColour(val);
-				sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+				let colour = getColour(valsArr[0]);
+				sequencer = sequencer.set(index, Map({velocity: valsArr[0], colour: colour}) );
 			}
-		})
+		} else if (valsArr > 1) {
+			valsArr.map((val, i) => {
+				if (i < 16) { // only accept 16 values, ignore the rest
+					let index = getIndex(i, row, 16);
+					let colour = getColour(val);
+					sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+				}
+			})
+		}
 		return state.set('sequencer', sequencer);	
 	} else {
 		return state.set('errors', 'Error in Sysex message: no such row exists' );
@@ -203,7 +211,7 @@ const setRow = (state, {data}) => {
 const setColumn = (state, {data}) => {
 	let column = data[2];
 	if (column >= 0 && column < 16) { // check column is sensible
-		let valsArr = data.slice(2);
+		let valsArr = data.slice(3);
 		let sequencer = state.get('sequencer');
 		valsArr.map((val, i) => {
 			if (i < 8) { // only accept 8 values, ignore the rest

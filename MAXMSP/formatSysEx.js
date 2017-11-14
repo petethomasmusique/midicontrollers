@@ -21,7 +21,7 @@ outlets = 1;
 var g = 0;
 
 // set grid number that you want to send message to
-function setGrid(grid) 
+function setGridNumber(grid) 
 {
 	g = grid;
 }
@@ -42,7 +42,7 @@ function setRow(y, s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s
 	var argArr = [s0, s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15];
 	var output = [240, 2, g, y];
 	for(i = 0; i < 16; i++) {
-		if (argArr[i]) {
+		if (!isNaN(argArr[i])) {
 			output.push(argArr[i]);
 		}
 	}
@@ -55,7 +55,7 @@ function setColumn(x, s0, s1, s2, s3, s4, s5, s6, s7)
 	var argArr = [s0, s1, s2, s3, s4, s5, s6, s7];
 	var output = [240, 3, g, x];
 	for(i = 0; i < 8; i++) {
-		if (argArr[i]) {
+		if (!isNaN(argArr[i])) {
 			output.push(argArr[i]);
 		}
 	}
