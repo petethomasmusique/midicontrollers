@@ -183,25 +183,8 @@ const setWholeGrid = (state, {data}) => {
 }
 
 const setRow = (state, {data}) => {
-	let row = data[2];
-	if (row >= 0 && row < 8) { // check row is sensible
-		let valsArr = data.slice(3);
-		let sequencer = state.get('sequencer');
-		if (valsArr.length === 1) {
-			for (let i = 0; i < 16; i++) {
-				let index = getIndex(i, row, 16);
-				let colour = getColour(valsArr[0]);
-				sequencer = sequencer.set(index, Map({velocity: valsArr[0], colour: colour}) );
-			}
-		} else if (valsArr > 1) {
-			valsArr.map((val, i) => {
-				if (i < 16) { // only accept 16 values, ignore the rest
-					let index = getIndex(i, row, 16);
-					let colour = getColour(val);
-					sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
-				}
-			})
-		}
+	if (data[2] >= 0 && data[2] < 8) { // check row is sensible
+		let sequencer = setSequencer(data, 16); // get sequencer values in row mode
 		return state.set('sequencer', sequencer);	
 	} else {
 		return state.set('errors', 'Error in Sysex message: no such row exists' );
@@ -209,32 +192,38 @@ const setRow = (state, {data}) => {
 }
 
 const setColumn = (state, {data}) => {
-	console.log(data);
-	let column = data[2];
-	if (column >= 0 && column < 16) { // check column is sensible
-		let valsArr = data.slice(3);
-		console.log(valsArr);
-		let sequencer = state.get('sequencer');
-		if (valsArr.length === 1) {
-			console.log('yes');
-			for (let i = 0; i < 8; i++) {
-				let index = getIndex(column, i, 16);
-				let colour = getColour(valsArr[0]);
-				sequencer = sequencer.set(index, Map({velocity: valsArr[0], colour: colour}) );
-			}
-		} else if (valsArr > 1) {
-			valsArr.map((val, i) => {
-				if (i < 8) { // only accept 8 values, ignore the rest
-					let index = getIndex(column, i, 16);
-					let colour = getColour(val);
-					sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
-				}
-			})
-		}
+	if (data[2] >= 0 && data[2] < 16) { // check column is sensible
+		let sequencer = setSequencer(data, 8); // get sequencer values in column mode
 		return state.set('sequencer', sequencer);	
 	} else {
 		return state.set('errors', 'Error in Sysex message: no such column exists' );
 	}
+}
+
+const setSequencer = (data, mode) => { // mode is 8 for col, 16 for row
+	let valsArr = data.slice(3);
+	let sequencer = store.getState().get('sequencer');
+	if (valsArr.length === 1) { // if only one value supplied, apply to whole row
+		for (let i = 0; i < 16; i++) {
+			if (mode == 16) {
+				return sequencer = sequencer.set(getIndex(i, data[2], 16), Map({velocity: valsArr[0], colour: getColour(valsArr[0])}));
+			} else {
+				return sequencer = sequencer.set(getIndex(data[2], i, 16), Map({velocity: valsArr[0], colour: getColour(valsArr[0])}));
+			}
+		}
+	} else if (valsArr > 1) { 
+		valsArr.map((val, i) => {
+			if (i < mode) { // only accept 8 or 16 values, ignore the rest
+				if (mode === 16) {
+					return sequencer = sequencer.set(getIndex(i, data[2], 16), Map({velocity: val, colour: getColour(val)}) );
+				} else {
+					return sequencer = sequencer.set(getIndex(data[2], i, 16), Map({velocity: val, colour: getColour(val)}) );
+				}
+			}
+		})
+
+	}
+	return sequencer;
 }
 
 const getIndex = (x, y, cols) => {
