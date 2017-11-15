@@ -209,12 +209,15 @@ const setRow = (state, {data}) => {
 }
 
 const setColumn = (state, {data}) => {
+	console.log(data);
 	let column = data[2];
 	if (column >= 0 && column < 16) { // check column is sensible
 		let valsArr = data.slice(3);
+		console.log(valsArr);
 		let sequencer = state.get('sequencer');
 		if (valsArr.length === 1) {
-			for (let i = 0; i < 16; i++) {
+			console.log('yes');
+			for (let i = 0; i < 8; i++) {
 				let index = getIndex(column, i, 16);
 				let colour = getColour(valsArr[0]);
 				sequencer = sequencer.set(index, Map({velocity: valsArr[0], colour: colour}) );
