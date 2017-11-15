@@ -14,6 +14,9 @@ export const enableMidi = (store) => {
 		  		// on successful enable, send a list of available devices to the state
 		  		let inputs = WebMidi.inputs;
 		  		let outputs = WebMidi.outputs;
+		  		if (inputs == '' || outputs == '') {
+		  			store.dispatch(updateErrors("Missing midi in/out device(s)"));
+		  		}
 		  		store.dispatch(availableMidi(inputs, outputs));
 			} else {
 				store.dispatch(updateErrors("Midi failed to enable"));
