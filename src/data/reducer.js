@@ -213,13 +213,21 @@ const setColumn = (state, {data}) => {
 	if (column >= 0 && column < 16) { // check column is sensible
 		let valsArr = data.slice(3);
 		let sequencer = state.get('sequencer');
-		valsArr.map((val, i) => {
-			if (i < 8) { // only accept 8 values, ignore the rest
+		if (valsArr.length === 1) {
+			for (let i = 0; i < 16; i++) {
 				let index = getIndex(column, i, 16);
-				let colour = getColour(val);
-				sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+				let colour = getColour(valsArr[0]);
+				sequencer = sequencer.set(index, Map({velocity: valsArr[0], colour: colour}) );
 			}
-		})
+		} else if (valsArr > 1) {
+			valsArr.map((val, i) => {
+				if (i < 8) { // only accept 8 values, ignore the rest
+					let index = getIndex(column, i, 16);
+					let colour = getColour(val);
+					sequencer = sequencer.set(index, Map({velocity: val, colour: colour}) );
+				}
+			})
+		}
 		return state.set('sequencer', sequencer);	
 	} else {
 		return state.set('errors', 'Error in Sysex message: no such column exists' );
