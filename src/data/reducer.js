@@ -162,7 +162,7 @@ const sendSysEx = (id, val) => {
 	let state = store.getState();
 	let outputDevice = state.get('midiOutDevice');
 	WebMidi.getOutputByName(outputDevice)
-		   .sendSysex(0, [x, y, val]); // 1st argument grid number, 2nd array of data [x,y,z]
+		   .sendSysex(0, [x, y, val]); // 1st argument  grid number, 2nd array of data [x,y,z]
 }
 
 const setSingleSquare = (state, {data}) => {
